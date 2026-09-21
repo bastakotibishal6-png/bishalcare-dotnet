@@ -12,21 +12,23 @@ export default function Users() {
     setError('');
 
     try {
-      // client.js already contains /api in baseURL
-      // Final URL:
-      // https://bishalvoid-001-site1.ktempurl.com/api/Admin/Users
       const res = await client.get('/Admin/Users');
 
       console.log('Admin users response:', res.data);
+      console.log('Is array:', Array.isArray(res.data));
 
-      // Make sure users is always an array
       if (Array.isArray(res.data)) {
         setUsers(res.data);
       } else {
-        console.error('Unexpected users response:', res.data);
+        console.error(
+          'Admin Users API did not return an array:',
+          res.data
+        );
 
         setUsers([]);
-        setError('Invalid users response from server.');
+        setError(
+          'Invalid users response from server.'
+        );
       }
     } catch (err) {
       console.error('Load users error:', err);
@@ -52,7 +54,6 @@ export default function Users() {
   return (
     <div className="admin-users-page">
 
-      {/* HEADER */}
       <div className="au-header">
         <div className="au-header-text">
           <h1 className="au-title">
@@ -74,7 +75,6 @@ export default function Users() {
         </button>
       </div>
 
-      {/* ERROR */}
       {error && (
         <div className="au-error-banner">
           <span className="au-error-icon">
@@ -85,8 +85,7 @@ export default function Users() {
         </div>
       )}
 
-      {/* LOADING */}
-      {loading && users.length === 0 ? (
+      {loading ? (
         <div className="au-loading-state">
           <div className="au-spinner"></div>
 
@@ -112,94 +111,88 @@ export default function Users() {
               </thead>
 
               <tbody>
+                {Array.isArray(users) &&
+                  users.map((u) => (
+                    <tr key={u.id}>
 
-                {users.map((u) => (
-                  <tr key={u.id}>
-
-                    {/* CUSTOMER NAME */}
-                    <td>
-                      <span className="au-name">
-                        {u.firstName || ''}{' '}
-                        {u.lastName || ''}
-                      </span>
-                    </td>
-
-                    {/* CONTACT */}
-                    <td>
-                      <div className="au-contact-info">
-
-                        <span className="au-email">
-                          {u.email || '-'}
+                      <td>
+                        <span className="au-name">
+                          {u.firstName || ''}{' '}
+                          {u.lastName || ''}
                         </span>
+                      </td>
 
-                        {u.phoneNumber && (
-                          <span className="au-phone">
-                            {u.phoneNumber}
+                      <td>
+                        <div className="au-contact-info">
+
+                          <span className="au-email">
+                            {u.email || '-'}
                           </span>
-                        )}
 
-                      </div>
-                    </td>
+                          {u.phoneNumber && (
+                            <span className="au-phone">
+                              {u.phoneNumber}
+                            </span>
+                          )}
 
-                    {/* CITY */}
-                    <td>
-                      <span className="au-text-muted">
-                        {u.city || '-'}
-                      </span>
-                    </td>
+                        </div>
+                      </td>
 
-                    {/* STATUS */}
-                    <td>
-                      <span
-                        className={`au-badge ${
-                          u.isMember
-                            ? 'au-badge-member'
-                            : 'au-badge-standard'
-                        }`}
+                      <td>
+                        <span className="au-text-muted">
+                          {u.city || '-'}
+                        </span>
+                      </td>
+
+                      <td>
+                        <span
+                          className={`au-badge ${
+                            u.isMember
+                              ? 'au-badge-member'
+                              : 'au-badge-standard'
+                          }`}
+                        >
+                          {u.isMember
+                            ? 'Member'
+                            : 'Standard'}
+                        </span>
+                      </td>
+
+                      <td>
+                        <span className="au-text-muted">
+                          {u.createdDate
+                            ? new Date(
+                                u.createdDate
+                              ).toLocaleDateString()
+                            : '-'}
+                        </span>
+                      </td>
+
+                      <td>
+                        <span className="au-text-muted">
+                          {u.lastLoginDate
+                            ? new Date(
+                                u.lastLoginDate
+                              ).toLocaleDateString()
+                            : 'Never'}
+                        </span>
+                      </td>
+
+                    </tr>
+                  ))}
+
+                {!loading &&
+                  Array.isArray(users) &&
+                  users.length === 0 && (
+                    <tr>
+                      <td
+                        colSpan="6"
+                        className="au-empty-state"
                       >
-                        {u.isMember
-                          ? 'Member'
-                          : 'Standard'}
-                      </span>
-                    </td>
-
-                    {/* JOINED DATE */}
-                    <td>
-                      <span className="au-text-muted">
-                        {u.createdDate
-                          ? new Date(
-                              u.createdDate
-                            ).toLocaleDateString()
-                          : '-'}
-                      </span>
-                    </td>
-
-                    {/* LAST LOGIN */}
-                    <td>
-                      <span className="au-text-muted">
-                        {u.lastLoginDate
-                          ? new Date(
-                              u.lastLoginDate
-                            ).toLocaleDateString()
-                          : 'Never'}
-                      </span>
-                    </td>
-
-                  </tr>
-                ))}
-
-                {/* EMPTY STATE */}
-                {!loading && users.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan="6"
-                      className="au-empty-state"
-                    >
-                      No customers found in the database.
-                    </td>
-                  </tr>
-                )}
-
+                        No customers found in the database.
+                      </td>
+                    </tr>
+                  )}
               </tbody>
 
             </table>
