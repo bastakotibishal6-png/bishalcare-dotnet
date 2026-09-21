@@ -6,7 +6,7 @@ export const COLORS = {
   almostBlack: '#2C2C2C',
 };
 
-export const CURRENCY = 'AED';
+export const CURRENCY = 'RS';
 
 export const MEMBERSHIP_PRICE = 99;
 export const MEMBER_DISCOUNT = 15; 

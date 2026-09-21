@@ -355,7 +355,7 @@ namespace MiraeLuxe.API.Migrations
                         new
                         {
                             PromotionId = 1,
-                            Description = "Members get free gift on every order. Non-members get free gift on orders AED 120+",
+                            Description = "Members get free gift on every order. Non-members get free gift on orders RS 120+",
                             IsActive = true,
                             MemberGiftEnabled = true,
                             NonMemberMinAmount = 120.00m,

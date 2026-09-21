@@ -486,7 +486,7 @@ namespace MiraeLuxe.API.Migrations
             migrationBuilder.InsertData(
                 table: "GiftPromotions",
                 columns: new[] { "PromotionId", "Description", "EndDate", "IsActive", "MemberGiftEnabled", "NonMemberMinAmount", "PromotionName", "StartDate" },
-                values: new object[] { 1, "Members get free gift on every order. Non-members get free gift on orders AED 120+", null, true, true, 120.00m, "Mirae Luxe Welcome Gift", new DateTime(2026, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                values: new object[] { 1, "Members get free gift on every order. Non-members get free gift on orders RS 120+", null, true, true, 120.00m, "Mirae Luxe Welcome Gift", new DateTime(2026, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

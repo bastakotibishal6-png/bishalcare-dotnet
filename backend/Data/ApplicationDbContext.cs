@@ -51,7 +51,7 @@ namespace MiraeLuxe.API.Data
                 {
                     PromotionId = 1,
                     PromotionName = "Mirae Luxe Welcome Gift",
-                    Description = "Members get free gift on every order. Non-members get free gift on orders AED 120+",
+                    Description = "Members get free gift on every order. Non-members get free gift on orders RS 120+",
                     MemberGiftEnabled = true,
                     NonMemberMinAmount = 120.00m,
                     StartDate = new DateTime(2026, 2, 10),

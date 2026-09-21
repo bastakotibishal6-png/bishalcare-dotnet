@@ -37,7 +37,7 @@ namespace MiraeLuxe.API.Controllers
                 {
                     IsMember = false,
                     Message = "Not a member",
-                    Price = "AED 99/year"
+                    Price = "RS 99/year"
                 });
             }
 
@@ -57,7 +57,7 @@ namespace MiraeLuxe.API.Controllers
                 {
                     IsMember = false,
                     Message = "Membership expired or inactive",
-                    Price = "AED 99/year"
+                    Price = "RS 99/year"
                 });
             }
 
@@ -210,7 +210,7 @@ namespace MiraeLuxe.API.Controllers
         {
             return Ok(new
             {
-                Price = "AED 99/year",
+                Price = "RS 99/year",
                 Benefits = new[]
                 {
                     new { Icon = "🎁", Title = "Free Mini Product",  Description = "Get a free mini product with EVERY order" },
@@ -240,7 +240,7 @@ namespace MiraeLuxe.API.Controllers
                 TotalSavings = totalSavings,
                 OrdersWithDiscount = orderCount,
                 AverageSavingsPerOrder = orderCount > 0 ? totalSavings / orderCount : 0,
-                Message = $"You've saved AED {totalSavings:F2} so far!"
+                Message = $"You've saved RS {totalSavings:F2} so far!"
             });
         }
     }

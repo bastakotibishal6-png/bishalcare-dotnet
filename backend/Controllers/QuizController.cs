@@ -38,16 +38,16 @@ namespace MiraeLuxe.API.Controllers
             {
                 switch (model.BudgetRange)
                 {
-                    case "Under AED 100":
+                    case "Under RS 100":
                         query = query.Where(p => p.Price < 100);
                         break;
-                    case "AED 100-150":
+                    case "RS 100-150":
                         query = query.Where(p => p.Price >= 100 && p.Price <= 150);
                         break;
-                    case "AED 150-200":
+                    case "RS 150-200":
                         query = query.Where(p => p.Price >= 150 && p.Price <= 200);
                         break;
-                    case "Above AED 200":
+                    case "Above RS 200":
                         query = query.Where(p => p.Price > 200);
                         break;
                 }
