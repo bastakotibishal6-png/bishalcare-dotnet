@@ -51,6 +51,7 @@ export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
   const [form, setForm] = useState({ ...emptyForm });
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -66,12 +67,17 @@ export default function Products() {
       const res = await client.get('/Products/Admin/All');
 
       console.log('Admin products response:', res.data);
+      console.log('Is products array:', Array.isArray(res.data));
 
       // Make sure products is always an array
       if (Array.isArray(res.data)) {
         setProducts(res.data);
       } else {
-        console.error('Unexpected products response:', res.data);
+        console.error(
+          'Unexpected products response:',
+          res.data
+        );
+
         setProducts([]);
         setError('Invalid products response from server.');
       }
@@ -165,7 +171,9 @@ export default function Products() {
   }
 
   async function handleDelete(id) {
-    const confirmed = window.confirm('Delete this product?');
+    const confirmed = window.confirm(
+      'Delete this product?'
+    );
 
     if (!confirmed) {
       return;
@@ -199,6 +207,7 @@ export default function Products() {
 
   return (
     <div className="admin-products">
+
       {/* HEADER */}
       <div className="page-header">
         <div>
@@ -219,7 +228,11 @@ export default function Products() {
       </div>
 
       {/* ERROR */}
-      {error && <p className="error-text">{error}</p>}
+      {error && (
+        <p className="error-text">
+          {error}
+        </p>
+      )}
 
       {/* ADD / EDIT FORM */}
       {showForm && (
@@ -228,7 +241,9 @@ export default function Products() {
           onSubmit={handleSubmit}
         >
           <h3>
-            {editingId ? 'Edit Product' : 'New Product'}
+            {editingId
+              ? 'Edit Product'
+              : 'New Product'}
           </h3>
 
           {/* BASIC INFO */}
@@ -237,6 +252,7 @@ export default function Products() {
           </div>
 
           <div className="form-grid">
+
             <input
               placeholder="Name *"
               value={form.name}
@@ -282,6 +298,7 @@ export default function Products() {
                 })
               }
             />
+
           </div>
 
           {/* PRICING & STOCK */}
@@ -290,6 +307,7 @@ export default function Products() {
           </div>
 
           <div className="form-grid">
+
             <input
               placeholder="Price *"
               type="number"
@@ -340,6 +358,7 @@ export default function Products() {
                 })
               }
             />
+
           </div>
 
           {/* DETAILS */}
@@ -348,6 +367,7 @@ export default function Products() {
           </div>
 
           <div className="form-grid">
+
             <input
               placeholder="Skin Type (e.g. All, Oily, Dry)"
               value={form.skinType}
@@ -369,6 +389,7 @@ export default function Products() {
                 })
               }
             />
+
           </div>
 
           {/* IMAGES */}
@@ -377,6 +398,7 @@ export default function Products() {
           </div>
 
           <div className="form-grid">
+
             <input
               type="url"
               placeholder="Image URL 1"
@@ -412,6 +434,7 @@ export default function Products() {
                 })
               }
             />
+
           </div>
 
           {/* DESCRIPTION */}
@@ -420,6 +443,7 @@ export default function Products() {
           </div>
 
           <div className="form-grid form-grid-single">
+
             <textarea
               placeholder="Description"
               value={form.description}
@@ -441,10 +465,12 @@ export default function Products() {
                 })
               }
             />
+
           </div>
 
           {/* CHECKBOXES */}
           <div className="checkbox-row">
+
             <label className="checkbox-label">
               <input
                 type="checkbox"
@@ -489,6 +515,7 @@ export default function Products() {
 
               Is Mini Gift
             </label>
+
           </div>
 
           <p className="form-help-text">
@@ -498,11 +525,14 @@ export default function Products() {
 
           {/* FORM BUTTONS */}
           <div className="form-actions">
+
             <button
               type="submit"
               className="btn-primary-admin"
             >
-              {editingId ? 'Save Changes' : 'Create'}
+              {editingId
+                ? 'Save Changes'
+                : 'Create'}
             </button>
 
             <button
@@ -512,30 +542,41 @@ export default function Products() {
             >
               Cancel
             </button>
+
           </div>
+
         </form>
       )}
 
       {/* PRODUCTS TABLE */}
       {loading ? (
+
         <div className="table-skeleton">
+
           {Array.from({ length: 5 }).map((_, i) => (
             <div
               className="skeleton-row"
               key={i}
             />
           ))}
+
         </div>
+
       ) : products.length === 0 ? (
+
         <div className="empty-products">
           <p>
-            No products yet. Add your first product to get
-            started.
+            No products yet. Add your first product to
+            get started.
           </p>
         </div>
+
       ) : (
+
         <div className="table-wrapper">
+
           <table className="data-table">
+
             <thead>
               <tr>
                 <th>Name</th>
@@ -549,67 +590,92 @@ export default function Products() {
             </thead>
 
             <tbody>
-              {products.map((p) => (
-                <tr key={p.productId}>
-                  <td className="product-name-cell">
-                    {p.name || '-'}
-                  </td>
 
-                  <td>
-                    {p.brand || '-'}
-                  </td>
+              {Array.isArray(products) &&
+                products.map((p) => (
 
-                  <td>
-                    {p.category || '-'}
+                  <tr
+                    key={p.productId}
+                  >
 
-                    {p.subCategory
-                      ? ` / ${p.subCategory}`
-                      : ''}
-                  </td>
+                    <td className="product-name-cell">
+                      {p.name || '-'}
+                    </td>
 
-                  <td className="price-cell">
-                    RS {p.price ?? 0}
-                  </td>
+                    <td>
+                      {p.brand || '-'}
+                    </td>
 
-                  <td>
-                    {p.stockQuantity ?? 0}
-                  </td>
+                    <td>
+                      {p.category || '-'}
 
-                  <td>
-                    <span
-                      className={`gift-pill ${
-                        p.isMiniGift ? 'yes' : 'no'
-                      }`}
-                    >
-                      {p.isMiniGift ? 'Yes' : 'No'}
-                    </span>
-                  </td>
+                      {p.subCategory
+                        ? ` / ${p.subCategory}`
+                        : ''}
+                    </td>
 
-                  <td className="actions-cell">
-                    <button
-                      type="button"
-                      className="btn-edit-row"
-                      onClick={() => startEdit(p)}
-                    >
-                      Edit
-                    </button>
+                    <td className="price-cell">
+                      RS {p.price ?? 0}
+                    </td>
 
-                    <button
-                      type="button"
-                      className="btn-delete-row"
-                      onClick={() =>
-                        handleDelete(p.productId)
-                      }
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    <td>
+                      {p.stockQuantity ?? 0}
+                    </td>
+
+                    <td>
+
+                      <span
+                        className={`gift-pill ${
+                          p.isMiniGift
+                            ? 'yes'
+                            : 'no'
+                        }`}
+                      >
+                        {p.isMiniGift
+                          ? 'Yes'
+                          : 'No'}
+                      </span>
+
+                    </td>
+
+                    <td className="actions-cell">
+
+                      <button
+                        type="button"
+                        className="btn-edit-row"
+                        onClick={() =>
+                          startEdit(p)
+                        }
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        type="button"
+                        className="btn-delete-row"
+                        onClick={() =>
+                          handleDelete(
+                            p.productId
+                          )
+                        }
+                      >
+                        Delete
+                      </button>
+
+                    </td>
+
+                  </tr>
+
+                ))}
+
             </tbody>
+
           </table>
+
         </div>
+
       )}
+
     </div>
   );
 }

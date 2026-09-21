@@ -22,14 +22,21 @@ export default function Orders() {
 
     try {
       // client.js already contains /api in baseURL
+      // Final URL:
+      // https://bishalvoid-001-site1.ktempurl.com/api/Admin/Orders
       const res = await client.get('/Admin/Orders');
 
       console.log('Admin orders response:', res.data);
+      console.log('Is orders array:', Array.isArray(res.data));
 
       if (Array.isArray(res.data)) {
         setOrders(res.data);
       } else {
-        console.error('Unexpected orders response:', res.data);
+        console.error(
+          'Unexpected orders response:',
+          res.data
+        );
+
         setOrders([]);
         setError('Invalid orders response from server.');
       }
@@ -40,10 +47,10 @@ export default function Orders() {
 
       setError(
         err?.response?.data?.message ||
-        err?.response?.data?.Message ||
-        err?.response?.data?.error ||
-        err?.response?.data?.Error ||
-        'Could not load orders. Make sure you are logged in with an Admin account.'
+          err?.response?.data?.Message ||
+          err?.response?.data?.error ||
+          err?.response?.data?.Error ||
+          'Could not load orders. Make sure you are logged in with an Admin account.'
       );
     } finally {
       setLoading(false);
@@ -58,28 +65,37 @@ export default function Orders() {
     try {
       setError('');
 
-      // client.js already contains /api in baseURL
+      // client.js already contains /api
+      // Final URL:
+      // /api/Admin/Orders/{orderId}/Status
       await client.put(
         `/Admin/Orders/${orderId}/Status`,
-        { status: newStatus }
+        {
+          status: newStatus
+        }
       );
 
       await loadOrders();
     } catch (err) {
-      console.error('Update order status error:', err);
+      console.error(
+        'Update order status error:',
+        err
+      );
 
       setError(
         err?.response?.data?.message ||
-        err?.response?.data?.Message ||
-        err?.response?.data?.error ||
-        err?.response?.data?.Error ||
-        'Could not update order status.'
+          err?.response?.data?.Message ||
+          err?.response?.data?.error ||
+          err?.response?.data?.Error ||
+          'Could not update order status.'
       );
     }
   }
 
   return (
     <div className="admin-orders">
+
+      {/* HEADER */}
       <div className="orders-header">
         <h1>Orders</h1>
 
@@ -88,28 +104,43 @@ export default function Orders() {
         </p>
       </div>
 
+      {/* ERROR */}
       {error && (
         <p className="error-text">
           {error}
         </p>
       )}
 
+      {/* LOADING */}
       {loading ? (
+
         <div className="table-skeleton">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              className="skeleton-row"
-              key={i}
-            />
-          ))}
+
+          {Array.from({ length: 6 }).map(
+            (_, i) => (
+              <div
+                className="skeleton-row"
+                key={i}
+              />
+            )
+          )}
+
         </div>
+
       ) : orders.length === 0 ? (
+
+        /* EMPTY */
         <div className="empty-orders">
           <p>No orders yet.</p>
         </div>
+
       ) : (
+
+        /* TABLE */
         <div className="table-wrapper">
+
           <table className="data-table">
+
             <thead>
               <tr>
                 <th>Order #</th>
@@ -123,72 +154,103 @@ export default function Orders() {
             </thead>
 
             <tbody>
-              {orders.map((o) => (
-                <tr key={o.orderId}>
-                  <td className="order-id-cell">
-                    #{o.orderId}
-                  </td>
 
-                  <td>
-                    <div className="customer-name">
-                      {o.customerName || '-'}
-                    </div>
+              {Array.isArray(orders) &&
+                orders.map((o) => (
 
-                    <div className="customer-email">
-                      {o.customerEmail || '-'}
-                    </div>
-                  </td>
+                  <tr
+                    key={o.orderId}
+                  >
 
-                  <td>
-                    {o.itemCount ?? 0}
-                  </td>
+                    {/* ORDER ID */}
+                    <td className="order-id-cell">
+                      #{o.orderId}
+                    </td>
 
-                  <td className="total-cell">
-                    RS {o.finalTotal ?? 0}
-                  </td>
+                    {/* CUSTOMER */}
+                    <td>
 
-                  <td>
-                    <select
-                      className={`status-select status-select-${(
-                        o.status || ''
-                      ).toLowerCase()}`}
-                      value={o.status || 'Pending'}
-                      onChange={(e) =>
-                        updateStatus(
-                          o.orderId,
-                          e.target.value
-                        )
-                      }
-                    >
-                      {STATUS_OPTIONS.map((status) => (
-                        <option
-                          key={status}
-                          value={status}
-                        >
-                          {status}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
+                      <div className="customer-name">
+                        {o.customerName || '-'}
+                      </div>
 
-                  <td className="date-cell">
-                    {o.orderDate
-                      ? new Date(
-                          o.orderDate
-                        ).toLocaleDateString()
-                      : '-'}
-                  </td>
+                      <div className="customer-email">
+                        {o.customerEmail || '-'}
+                      </div>
 
-                  <td className="tracking-cell">
-                    {o.trackingNumber || '-'}
-                  </td>
-                </tr>
-              ))}
+                    </td>
+
+                    {/* ITEMS */}
+                    <td>
+                      {o.itemCount ?? 0}
+                    </td>
+
+                    {/* TOTAL */}
+                    <td className="total-cell">
+                      RS {o.finalTotal ?? 0}
+                    </td>
+
+                    {/* STATUS */}
+                    <td>
+
+                      <select
+                        className={`status-select status-select-${(
+                          o.status || ''
+                        ).toLowerCase()}`}
+                        value={
+                          o.status || 'Pending'
+                        }
+                        onChange={(e) =>
+                          updateStatus(
+                            o.orderId,
+                            e.target.value
+                          )
+                        }
+                      >
+
+                        {STATUS_OPTIONS.map(
+                          (status) => (
+                            <option
+                              key={status}
+                              value={status}
+                            >
+                              {status}
+                            </option>
+                          )
+                        )}
+
+                      </select>
+
+                    </td>
+
+                    {/* DATE */}
+                    <td className="date-cell">
+
+                      {o.orderDate
+                        ? new Date(
+                            o.orderDate
+                          ).toLocaleDateString()
+                        : '-'}
+
+                    </td>
+
+                    {/* TRACKING */}
+                    <td className="tracking-cell">
+                      {o.trackingNumber || '-'}
+                    </td>
+
+                  </tr>
+
+                ))}
+
             </tbody>
+
           </table>
+
         </div>
+
       )}
+
     </div>
   );
 }
-
