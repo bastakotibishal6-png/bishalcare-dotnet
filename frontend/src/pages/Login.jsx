@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usersAPI } from '../services/api';
+
+import client from '../api/client';
 import { login as adminLogin } from '../api/auth';
 
 import './Login.css';
@@ -25,6 +26,9 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // =====================================================
+  // INPUT CHANGE
+  // =====================================================
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -36,9 +40,9 @@ const Login = () => {
     setError('');
   };
 
-  // =========================
+  // =====================================================
   // CUSTOMER LOGIN
-  // =========================
+  // =====================================================
   const handleUserLogin = async (e) => {
     e.preventDefault();
 
@@ -46,33 +50,50 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Remove admin session if it exists
+      // Remove admin session
       localStorage.removeItem('admin_token');
       localStorage.removeItem('admin_name');
       localStorage.removeItem('admin_email');
+      localStorage.removeItem('admin_user');
 
-      const response = await usersAPI.login({
-        email: formData.email,
+      // -----------------------------------------------
+      // POST /api/Users/Login
+      // -----------------------------------------------
+      const response = await client.post('/Users/Login', {
+        email: formData.email.trim(),
         password: formData.password,
       });
 
-      console.log('Customer login response:', response.data);
+      console.log(
+        'Customer login response:',
+        response.data
+      );
 
       const responseData = response.data;
 
+      // -----------------------------------------------
+      // GET TOKEN
+      // -----------------------------------------------
       const token =
         responseData?.token ||
         responseData?.Token ||
+        responseData?.accessToken ||
+        responseData?.access_token ||
         responseData?.data?.token ||
         responseData?.data?.Token ||
-        responseData?.accessToken;
+        responseData?.data?.accessToken;
 
       if (!token) {
-        throw new Error('Login successful but no token was returned.');
+        throw new Error(
+          'Login successful but no authentication token was returned.'
+        );
       }
 
       localStorage.setItem('token', token);
 
+      // -----------------------------------------------
+      // GET USER
+      // -----------------------------------------------
       const userData =
         responseData?.user ||
         responseData?.User ||
@@ -86,7 +107,8 @@ const Login = () => {
           userData?.userId ||
           userData?.UserId ||
           userData?.id ||
-          userData?.Id,
+          userData?.Id ||
+          null,
 
         firstName:
           userData?.firstName ||
@@ -144,12 +166,19 @@ const Login = () => {
           null,
       };
 
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem(
+        'user',
+        JSON.stringify(user)
+      );
 
       alert('Login successful!');
+
       navigate('/my-account');
     } catch (err) {
-      console.error('Customer login error:', err);
+      console.error(
+        'Customer login error:',
+        err
+      );
 
       const message =
         err?.response?.data?.message ||
@@ -164,9 +193,9 @@ const Login = () => {
     }
   };
 
-  // =========================
+  // =====================================================
   // ADMIN LOGIN
-  // =========================
+  // =====================================================
   const handleAdminLogin = async (e) => {
     e.preventDefault();
 
@@ -174,34 +203,69 @@ const Login = () => {
     setLoading(true);
 
     try {
+      // -----------------------------------------------
       // Remove customer session
+      // -----------------------------------------------
       localStorage.removeItem('token');
       localStorage.removeItem('user');
 
-      // Login and verify Admin role
-      await adminLogin(
-        formData.email,
+      // -----------------------------------------------
+      // Admin login
+      //
+      // POST /api/Users/Login
+      // -----------------------------------------------
+      const result = await adminLogin(
+        formData.email.trim(),
         formData.password
       );
 
       console.log(
-        'Admin token:',
-        localStorage.getItem('admin_token')
+        'Admin login successful:',
+        result
       );
+
+      const adminToken =
+        localStorage.getItem('admin_token');
+
+      if (!adminToken) {
+        throw new Error(
+          'Login succeeded but admin authentication token was not saved.'
+        );
+      }
 
       alert('Admin login successful!');
 
-      // IMPORTANT:
-      // Go to ADMIN dashboard, not customer homepage
+      // -----------------------------------------------
+      // Go to admin dashboard
+      // -----------------------------------------------
       navigate('/admin');
     } catch (err) {
-      console.error('Admin login error:', err);
+      console.error(
+        'Admin login error:',
+        err
+      );
 
-      const message =
+      // -----------------------------------------------
+      // Backend error
+      // -----------------------------------------------
+      let message =
         err?.response?.data?.message ||
         err?.response?.data?.Message ||
-        err?.message ||
-        'Admin login failed.';
+        err?.response?.data?.error;
+
+      // -----------------------------------------------
+      // Axios network error
+      // -----------------------------------------------
+      if (!message && !err?.response) {
+        message =
+          'Network Error: Unable to connect to BishalCare API.';
+      }
+
+      if (!message) {
+        message =
+          err?.message ||
+          'Admin login failed. Please check your email and password.';
+      }
 
       setError(message);
     } finally {
@@ -209,9 +273,9 @@ const Login = () => {
     }
   };
 
-  // =========================
+  // =====================================================
   // REGISTER
-  // =========================
+  // =====================================================
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -219,18 +283,20 @@ const Login = () => {
     setLoading(true);
 
     try {
-      await usersAPI.register({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
+      await client.post('/Users/Register', {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim(),
         password: formData.password,
-        phoneNumber: formData.phoneNumber,
-        address: formData.address,
-        city: formData.city,
-        postalCode: formData.postalCode,
+        phoneNumber: formData.phoneNumber.trim(),
+        address: formData.address.trim(),
+        city: formData.city.trim(),
+        postalCode: formData.postalCode.trim(),
       });
 
-      alert('Registration successful! Please login.');
+      alert(
+        'Registration successful! Please login.'
+      );
 
       setIsLogin(true);
 
@@ -245,11 +311,15 @@ const Login = () => {
         postalCode: '',
       });
     } catch (err) {
-      console.error('Registration error:', err);
+      console.error(
+        'Registration error:',
+        err
+      );
 
       const message =
         err?.response?.data?.message ||
         err?.response?.data?.Message ||
+        err?.response?.data?.error ||
         err?.message ||
         'Registration failed.';
 
@@ -259,9 +329,9 @@ const Login = () => {
     }
   };
 
-  // =========================
+  // =====================================================
   // ADMIN LOGIN SCREEN
-  // =========================
+  // =====================================================
   if (isAdminLogin) {
     return (
       <div className="login-page">
@@ -269,7 +339,10 @@ const Login = () => {
           <div className="login-card">
 
             <h2>BishalCare Admin</h2>
-            <p className="subtitle">Admin Login</p>
+
+            <p className="subtitle">
+              Admin Login
+            </p>
 
             {error && (
               <div className="error-message">
@@ -280,29 +353,37 @@ const Login = () => {
             <form onSubmit={handleAdminLogin}>
 
               <div className="form-group">
-                <label>Email</label>
+                <label htmlFor="admin-email">
+                  Email
+                </label>
 
                 <input
+                  id="admin-email"
                   type="email"
                   name="email"
                   className="form-control"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Admin email"
+                  autoComplete="email"
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label>Password</label>
+                <label htmlFor="admin-password">
+                  Password
+                </label>
 
                 <input
+                  id="admin-password"
                   type="password"
                   name="password"
                   className="form-control"
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Admin password"
+                  autoComplete="current-password"
                   required
                 />
               </div>
@@ -336,13 +417,16 @@ const Login = () => {
     );
   }
 
-  // =========================
+  // =====================================================
   // CUSTOMER LOGIN / REGISTER
-  // =========================
+  // =====================================================
   return (
     <div className="login-page">
+
       <div className="container">
+
         <div className="login-container login-container-single">
+
           <div className="login-card">
 
             <h2>
@@ -363,33 +447,45 @@ const Login = () => {
               </div>
             )}
 
+            {/* =================================================
+                CUSTOMER LOGIN
+            ================================================= */}
             {isLogin ? (
+
               <form onSubmit={handleUserLogin}>
 
                 <div className="form-group">
-                  <label>Email</label>
+                  <label htmlFor="login-email">
+                    Email
+                  </label>
 
                   <input
+                    id="login-email"
                     type="email"
                     name="email"
                     className="form-control"
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="Enter your email"
+                    autoComplete="email"
                     required
                   />
                 </div>
 
                 <div className="form-group">
-                  <label>Password</label>
+                  <label htmlFor="login-password">
+                    Password
+                  </label>
 
                   <input
+                    id="login-password"
                     type="password"
                     name="password"
                     className="form-control"
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="Enter your password"
+                    autoComplete="current-password"
                     required
                   />
                 </div>
@@ -405,15 +501,24 @@ const Login = () => {
                 </button>
 
               </form>
+
             ) : (
+
+              /* =================================================
+                 REGISTER
+              ================================================= */
+
               <form onSubmit={handleRegister}>
 
                 <div className="form-row">
 
                   <div className="form-group">
-                    <label>First Name</label>
+                    <label htmlFor="first-name">
+                      First Name
+                    </label>
 
                     <input
+                      id="first-name"
                       type="text"
                       name="firstName"
                       className="form-control"
@@ -425,9 +530,12 @@ const Login = () => {
                   </div>
 
                   <div className="form-group">
-                    <label>Last Name</label>
+                    <label htmlFor="last-name">
+                      Last Name
+                    </label>
 
                     <input
+                      id="last-name"
                       type="text"
                       name="lastName"
                       className="form-control"
@@ -441,9 +549,12 @@ const Login = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Email</label>
+                  <label htmlFor="register-email">
+                    Email
+                  </label>
 
                   <input
+                    id="register-email"
                     type="email"
                     name="email"
                     className="form-control"
@@ -455,9 +566,12 @@ const Login = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Password</label>
+                  <label htmlFor="register-password">
+                    Password
+                  </label>
 
                   <input
+                    id="register-password"
                     type="password"
                     name="password"
                     className="form-control"
@@ -469,9 +583,12 @@ const Login = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Phone Number</label>
+                  <label htmlFor="phone-number">
+                    Phone Number
+                  </label>
 
                   <input
+                    id="phone-number"
                     type="text"
                     name="phoneNumber"
                     className="form-control"
@@ -482,9 +599,12 @@ const Login = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Address</label>
+                  <label htmlFor="address">
+                    Address
+                  </label>
 
                   <input
+                    id="address"
                     type="text"
                     name="address"
                     className="form-control"
@@ -497,9 +617,12 @@ const Login = () => {
                 <div className="form-row">
 
                   <div className="form-group">
-                    <label>City</label>
+                    <label htmlFor="city">
+                      City
+                    </label>
 
                     <input
+                      id="city"
                       type="text"
                       name="city"
                       className="form-control"
@@ -510,9 +633,12 @@ const Login = () => {
                   </div>
 
                   <div className="form-group">
-                    <label>Postal Code</label>
+                    <label htmlFor="postal-code">
+                      Postal Code
+                    </label>
 
                     <input
+                      id="postal-code"
                       type="text"
                       name="postalCode"
                       className="form-control"
@@ -537,9 +663,14 @@ const Login = () => {
               </form>
             )}
 
+            {/* =================================================
+                SWITCH LOGIN / REGISTER
+            ================================================= */}
+
             <div className="auth-switch">
 
               {isLogin ? (
+
                 <p>
                   Don't have an account?{' '}
 
@@ -554,7 +685,9 @@ const Login = () => {
                     Create Account
                   </button>
                 </p>
+
               ) : (
+
                 <p>
                   Already have an account?{' '}
 
@@ -569,9 +702,14 @@ const Login = () => {
                     Sign In
                   </button>
                 </p>
+
               )}
 
             </div>
+
+            {/* =================================================
+                ADMIN LOGIN
+            ================================================= */}
 
             <div className="admin-login-link">
 
@@ -589,8 +727,11 @@ const Login = () => {
             </div>
 
           </div>
+
         </div>
+
       </div>
+
     </div>
   );
 };

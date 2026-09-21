@@ -1,93 +1,146 @@
 import client from './client';
 
-const LOGIN_ENDPOINT = '/Users/Login';
-
-export async function login(email, password) {
-  const response = await client.post(
-    LOGIN_ENDPOINT,
-    {
+/**
+ * Admin Login
+ *
+ * API:
+ * POST /api/Users/Login
+ */
+export const login = async (email, password) => {
+  try {
+    const response = await client.post('/Users/Login', {
       email,
       password,
+    });
+
+    const data = response.data;
+
+    console.log('Admin login API response:', data);
+
+    // =================================================
+    // GET TOKEN
+    // =================================================
+    const token =
+      data?.token ||
+      data?.Token ||
+      data?.accessToken ||
+      data?.access_token ||
+      data?.data?.token ||
+      data?.data?.Token ||
+      data?.data?.accessToken;
+
+    if (!token) {
+      console.error(
+        'Login response did not contain a JWT token:',
+        data
+      );
+
+      throw new Error(
+        'Login succeeded, but the server did not return an authentication token.'
+      );
     }
-  );
 
-  const {
-    token,
-    isAdmin,
-    firstName,
-    lastName,
-    email: userEmail,
-  } = normalizeKeys(response.data);
+    // =================================================
+    // GET USER INFORMATION
+    // =================================================
+    const user =
+      data?.user ||
+      data?.User ||
+      data?.data?.user ||
+      data?.data?.User ||
+      data?.data ||
+      {};
 
-  if (!token) {
-    throw new Error(
-      'Login succeeded but no token was returned.'
+    // =================================================
+    // SAVE ADMIN SESSION
+    // =================================================
+    localStorage.setItem('admin_token', token);
+
+    localStorage.setItem(
+      'admin_email',
+      user?.email ||
+        user?.Email ||
+        email
     );
-  }
 
-  if (!isAdmin) {
-    throw new Error(
-      'This account does not have Admin access. ' +
-      'Add its email to AdminSettings:AdminEmails in appsettings.json and restart the backend.'
+    const firstName =
+      user?.firstName ||
+      user?.FirstName ||
+      '';
+
+    const lastName =
+      user?.lastName ||
+      user?.LastName ||
+      '';
+
+    const fullName =
+      `${firstName} ${lastName}`.trim();
+
+    if (fullName) {
+      localStorage.setItem('admin_name', fullName);
+    } else {
+      localStorage.setItem(
+        'admin_name',
+        user?.name ||
+          user?.Name ||
+          email
+      );
+    }
+
+    // Save complete response/user for later use
+    localStorage.setItem(
+      'admin_user',
+      JSON.stringify(user)
     );
+
+    return {
+      success: true,
+      token,
+      user,
+      data,
+    };
+  } catch (error) {
+    console.error('Admin login API error:', error);
+
+    // Preserve the original Axios error so the Login
+    // component can display the backend message.
+    throw error;
   }
+};
 
-  localStorage.setItem('admin_token', token);
-
-  localStorage.setItem(
-    'admin_name',
-    `${firstName || ''} ${lastName || ''}`.trim()
-  );
-
-  localStorage.setItem(
-    'admin_email',
-    userEmail || ''
-  );
-
-  return response.data;
-}
-
-function normalizeKeys(obj) {
-  return {
-    token: obj?.token || obj?.Token,
-
-    isAdmin:
-      obj?.isAdmin ??
-      obj?.IsAdmin ??
-      false,
-
-    firstName:
-      obj?.firstName ||
-      obj?.FirstName ||
-      '',
-
-    lastName:
-      obj?.lastName ||
-      obj?.LastName ||
-      '',
-
-    email:
-      obj?.email ||
-      obj?.Email ||
-      '',
-  };
-}
-
-export function logout() {
+/**
+ * Logout Admin
+ */
+export const logout = () => {
   localStorage.removeItem('admin_token');
   localStorage.removeItem('admin_name');
   localStorage.removeItem('admin_email');
+  localStorage.removeItem('admin_user');
+};
 
-  window.location.href = '/login';
-}
+/**
+ * Check whether an admin token exists
+ */
+export const isAdminLoggedIn = () => {
+  return Boolean(localStorage.getItem('admin_token'));
+};
 
-export function isLoggedIn() {
-  return !!localStorage.getItem('admin_token');
-}
+/**
+ * Get currently stored admin token
+ */
+export const getAdminToken = () => {
+  return localStorage.getItem('admin_token');
+};
 
-export function getAdminName() {
-  return (
-    localStorage.getItem('admin_name') ||
-    'Admin'
-  );
-}
+/**
+ * Get stored admin user
+ */
+export const getAdminUser = () => {
+  try {
+    const user = localStorage.getItem('admin_user');
+
+    return user ? JSON.parse(user) : null;
+  } catch {
+    return null;
+  }
+};
