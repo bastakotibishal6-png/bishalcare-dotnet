@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export const API_BASE_URL = '/api';
+export const API_BASE_URL =
+  'https://bishalvoid-001-site1.ktempurl.com/api';
 
 const client = axios.create({
   baseURL: API_BASE_URL,
