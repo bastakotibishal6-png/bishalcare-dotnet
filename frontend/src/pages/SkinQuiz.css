@@ -1,0 +1,245 @@
+/* Premium E-commerce Beauty Redesign */
+
+.sq-page {
+  min-height: 100vh;
+  padding: 80px 20px 100px;
+  background-color: #FAF9F6; /* Soft, warm off-white */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #1A1A1A;
+}
+
+.sq-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Progress Indicator */
+.sq-progress-wrapper {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.sq-progress-label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #8C827A;
+  margin-bottom: 15px;
+}
+
+.sq-progress-bar {
+  width: 100%;
+  height: 1px;
+  background-color: #EAEAED;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.sq-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1px;
+  background-color: #1A1A1A;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sq-step-indicator {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin: 0;
+}
+
+.sq-step-total {
+  color: #8C827A;
+  font-weight: 400;
+}
+
+/* Quiz Content Area */
+.sq-content {
+  background: transparent;
+  animation: sqFadeInUp 0.5s ease-out forwards;
+}
+
+@keyframes sqFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sq-step-container {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.sq-step-title {
+  font-size: 32px;
+  font-weight: 300;
+  color: #1A1A1A;
+  margin: 0 0 12px 0;
+}
+
+.sq-step-subtitle {
+  font-size: 15px;
+  color: #666;
+  margin: 0 0 40px 0;
+}
+
+/* Options Grid */
+.sq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  text-align: left;
+}
+
+.sq-grid-small {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.sq-card {
+  background: #FFFFFF;
+  border: 1px solid #EAEAED;
+  border-radius: 4px;
+  padding: 24px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+.sq-card:hover {
+  border-color: #C4BCB3;
+}
+
+.sq-card-active {
+  border-color: #1A1A1A;
+  background: #F4F1ED; /* Very subtle warm tint */
+}
+
+.sq-card-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin: 0 0 8px 0;
+}
+
+.sq-card-desc {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Emoji / Icons for step 4 */
+.sq-card-icon {
+  padding: 30px 20px;
+}
+
+.sq-card-emoji {
+  font-size: 28px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* Navigation Buttons */
+.sq-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid #EAEAED;
+}
+
+.sq-btn {
+  padding: 14px 32px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.sq-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.sq-btn-back {
+  background: transparent;
+  color: #666;
+  border: 1px solid transparent;
+  padding-left: 0;
+}
+
+.sq-btn-back:hover:not(:disabled) {
+  color: #1A1A1A;
+}
+
+.sq-btn-next, .sq-btn-submit {
+  background: #1A1A1A;
+  color: #FFFFFF;
+  border: 1px solid #1A1A1A;
+  min-width: 160px;
+}
+
+.sq-btn-next:hover:not(:disabled), 
+.sq-btn-submit:hover:not(:disabled) {
+  background: #333333;
+  border-color: #333333;
+}
+
+.sq-loading-text {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .sq-page {
+    padding: 40px 20px 60px;
+  }
+
+  .sq-step-title {
+    font-size: 28px;
+  }
+
+  .sq-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sq-card {
+    min-height: auto;
+    padding: 20px;
+  }
+  
+  .sq-navigation {
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+  
+  .sq-btn-next, .sq-btn-submit, .sq-btn-back {
+    width: 100%;
+    padding: 16px;
+    text-align: center;
+  }
+}

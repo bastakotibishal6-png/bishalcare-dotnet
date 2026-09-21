@@ -1,0 +1,22 @@
+/* Soft shimmer shown on the <img> element itself while the photo loads */
+.product-img--loading {
+  background: linear-gradient(
+    100deg,
+    var(--soft-beige, #f5f0e9) 30%,
+    rgba(255, 255, 255, 0.7) 50%,
+    var(--soft-beige, #f5f0e9) 70%
+  );
+  background-size: 200% 100%;
+  animation: product-img-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes product-img-shimmer {
+  from { background-position: 150% 0; }
+  to   { background-position: -50% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-img--loading {
+    animation: none;
+  }
+}

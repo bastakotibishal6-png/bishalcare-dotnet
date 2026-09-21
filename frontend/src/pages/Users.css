@@ -1,0 +1,218 @@
+/* Premium Admin Dashboard Styling */
+
+.admin-users-page {
+  padding: 40px;
+  background-color: #FAF9F6;
+  min-height: 100vh;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #1A1A1A;
+}
+
+/* Header Area */
+.au-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.au-title {
+  font-size: 28px;
+  font-weight: 300;
+  color: #1A1A1A;
+  margin: 0 0 8px 0;
+}
+
+.au-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.au-refresh-btn {
+  background: #FFFFFF;
+  border: 1px solid #EAEAED;
+  color: #1A1A1A;
+  padding: 10px 20px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.au-refresh-btn:hover:not(:disabled) {
+  border-color: #1A1A1A;
+  background: #F4F1ED;
+}
+
+.au-refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+/* Error & Loading States */
+.au-error-banner {
+  background-color: #FDF3F3;
+  border: 1px solid #F5C6C6;
+  color: #B3261E;
+  padding: 16px 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+.au-error-banner p {
+  margin: 0;
+}
+
+.au-loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  color: #8C827A;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.au-spinner {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #E5E0D8;
+  border-top-color: #8C827A;
+  border-radius: 50%;
+  animation: au-spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes au-spin { 
+  to { transform: rotate(360deg); } 
+}
+
+/* Table Container */
+.au-table-container {
+  background: #FFFFFF;
+  border: 1px solid #EAEAED;
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+}
+
+.au-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.au-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* Table Headers */
+.au-table th {
+  background-color: #FFFFFF;
+  padding: 16px 24px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #8C827A;
+  font-weight: 600;
+  border-bottom: 1px solid #EAEAED;
+}
+
+/* Table Body */
+.au-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid #F4F1ED;
+  vertical-align: middle;
+}
+
+.au-table tr:last-child td {
+  border-bottom: none;
+}
+
+.au-table tr:hover {
+  background-color: #FCFBF9;
+}
+
+/* Cell Formatting */
+.au-name {
+  font-weight: 500;
+  color: #1A1A1A;
+}
+
+.au-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.au-email {
+  font-size: 14px;
+  color: #1A1A1A;
+}
+
+.au-phone {
+  font-size: 12px;
+  color: #8C827A;
+}
+
+.au-text-muted {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Badges */
+.au-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.au-badge-member {
+  background-color: #F4F1ED;
+  color: #8B7355; /* Muted Bronze */
+  border: 1px solid #D6CDC4;
+}
+
+.au-badge-standard {
+  background-color: #F5F5F5;
+  color: #666666;
+  border: 1px solid #EAEAED;
+}
+
+/* Empty State */
+.au-empty-state {
+  text-align: center;
+  padding: 40px !important;
+  color: #8C827A;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-users-page {
+    padding: 20px;
+  }
+  
+  .au-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

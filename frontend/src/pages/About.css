@@ -1,0 +1,302 @@
+/* ==========================================================================
+   About page: Bishal Care
+   ========================================================================== */
+
+.about-page {
+  --ab-ink: var(--almost-black, #1f1b18);
+  --ab-muted: #6f655c;
+  --ab-accent: var(--muted-bronze, #8b7355);
+  --ab-surface: var(--pure-white, #ffffff);
+  --ab-canvas: var(--soft-beige, #f5f0e9);
+  --ab-line: rgba(70, 52, 36, 0.13);
+  --ab-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  color: var(--ab-ink);
+  padding-bottom: 0;
+}
+
+/* ---------- Shared section layout ---------- */
+
+.about-section {
+  padding: clamp(56px, 8vw, 96px) 0;
+  background: var(--ab-surface);
+}
+
+.about-section--tinted {
+  background: var(--ab-canvas);
+}
+
+.about-section__title {
+  margin: 0 0 clamp(32px, 5vw, 56px);
+  text-align: center;
+  font-family: var(--heading-font, inherit);
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ab-ink);
+}
+
+/* ---------- Hero ---------- */
+
+.about-hero {
+  padding: clamp(64px, 10vw, 112px) 0;
+  text-align: center;
+  background: var(--ab-canvas);
+  border-bottom: 1px solid var(--ab-line);
+}
+
+.about-hero h1 {
+  margin: 0;
+  font-family: var(--heading-font, inherit);
+  font-size: clamp(34px, 5.5vw, 56px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--ab-ink);
+}
+
+.about-hero h1::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 1px;
+  margin: 24px auto 0;
+  background: var(--ab-accent);
+}
+
+.about-hero__subtitle {
+  margin: 20px 0 0;
+  font-size: clamp(16px, 2vw, 20px);
+  letter-spacing: 0.04em;
+  color: var(--ab-muted);
+}
+
+/* ---------- Story ---------- */
+
+.about-story__grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(32px, 6vw, 80px);
+  align-items: center;
+}
+
+.about-story__text h2 {
+  margin: 0 0 24px;
+  font-family: var(--heading-font, inherit);
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ab-ink);
+}
+
+.about-story__text p {
+  margin: 0 0 18px;
+  max-width: 60ch;
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--ab-muted);
+}
+
+.about-story__text p:last-child {
+  margin-bottom: 0;
+}
+
+.about-story__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(28px, 5vw, 56px);
+  background: var(--ab-canvas);
+  border: 1px solid var(--ab-line);
+  border-radius: 4px;
+}
+
+.about-story__logo {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ---------- Values ---------- */
+
+.about-values__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* The AOS wrapper and the card are separate elements, so the hover effect
+   never fights the scroll animation's transform. */
+.about-values__item {
+  display: flex;
+}
+
+.about-values__card {
+  flex: 1;
+  padding: 36px 26px 32px;
+  text-align: center;
+  background: var(--ab-surface);
+  border: 1px solid var(--ab-line);
+  border-radius: 4px;
+  transition: border-color 0.35s var(--ab-ease), box-shadow 0.35s var(--ab-ease);
+}
+
+.about-values__card:hover {
+  border-color: rgba(70, 52, 36, 0.28);
+  box-shadow: 0 16px 32px -16px rgba(70, 52, 36, 0.25);
+}
+
+.about-values__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 22px;
+  color: var(--ab-accent);
+  background: var(--ab-canvas);
+  border-radius: 50%;
+}
+
+.about-values__card h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ab-ink);
+}
+
+.about-values__card p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--ab-muted);
+}
+
+/* ---------- Mission ---------- */
+
+.about-mission__content {
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-mission__content::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 1px;
+  margin: 0 auto 28px;
+  background: var(--ab-accent);
+}
+
+.about-mission__content h2 {
+  margin: 0 0 24px;
+  font-family: var(--heading-font, inherit);
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ab-ink);
+}
+
+.about-mission__content p {
+  margin: 0;
+  font-size: clamp(17px, 2.1vw, 21px);
+  line-height: 1.85;
+  color: var(--ab-muted);
+}
+
+/* ---------- Stats ---------- */
+
+.about-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.about-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  text-align: center;
+  border-left: 1px solid var(--ab-line);
+}
+
+.about-stat:first-child {
+  border-left: none;
+}
+
+.about-stat__value {
+  font-family: var(--heading-font, inherit);
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--ab-accent);
+}
+
+.about-stat__label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ab-muted);
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 992px) {
+  .about-values__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 768px) {
+  .about-story__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-story__media {
+    order: 2;
+  }
+
+  .about-stats__grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 8px;
+  }
+
+  .about-stat {
+    padding: 24px 12px;
+    border-left: none;
+    border-top: 1px solid var(--ab-line);
+  }
+
+  .about-stat:nth-child(-n + 2) {
+    border-top: none;
+  }
+
+  .about-stat:nth-child(even) {
+    border-left: 1px solid var(--ab-line);
+  }
+}
+
+@media (max-width: 560px) {
+  .about-values__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .about-values__card {
+    padding: 28px 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-values__card {
+    transition: none;
+  }
+}

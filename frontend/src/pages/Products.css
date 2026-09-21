@@ -1,0 +1,352 @@
+.admin-products {
+  padding: 40px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--almost-black);
+  margin-bottom: 6px;
+}
+
+.products-subtitle {
+  font-size: 14px;
+  color: var(--warm-taupe);
+}
+
+.btn-add {
+  background: var(--almost-black);
+  color: var(--pure-white);
+  border: none;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-add:hover {
+  opacity: 0.85;
+}
+
+.error-text {
+  background: #f7e9e7;
+  color: #a03d2f;
+  border-left: 2px solid #a03d2f;
+  padding: 12px 16px;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* Inline form */
+
+.inline-form {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-beige);
+  padding: 32px;
+  margin-bottom: 28px;
+}
+
+.inline-form h3 {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--almost-black);
+  margin-bottom: 24px;
+}
+
+.form-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--muted-bronze);
+  margin: 22px 0 12px;
+}
+
+.form-section-label:first-of-type {
+  margin-top: 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.form-grid-single {
+  grid-template-columns: 1fr 1fr;
+}
+
+.inline-form input,
+.inline-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--warm-taupe);
+  background: var(--pure-white);
+  font-size: 14px;
+  color: var(--almost-black);
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.inline-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.inline-form input:focus,
+.inline-form textarea:focus {
+  outline: none;
+  border-color: var(--muted-bronze);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+}
+
+.inline-form input::placeholder,
+.inline-form textarea::placeholder {
+  color: var(--warm-taupe);
+}
+
+.checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 24px 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--soft-beige);
+  border-bottom: 1px solid var(--soft-beige);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--almost-black);
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--muted-bronze);
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-primary-admin {
+  background: var(--almost-black);
+  color: var(--pure-white);
+  border: none;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.25s ease;
+}
+
+.btn-primary-admin:hover {
+  opacity: 0.85;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 1px solid var(--warm-taupe);
+  color: var(--almost-black);
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.btn-cancel:hover {
+  border-color: var(--almost-black);
+  background: var(--soft-beige);
+}
+
+/* Empty state */
+
+.empty-products {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-beige);
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.empty-products p {
+  color: var(--warm-taupe);
+  font-size: 15px;
+}
+
+/* Table */
+
+.table-wrapper {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-beige);
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.data-table thead {
+  background: var(--soft-beige);
+}
+
+.data-table th {
+  text-align: left;
+  padding: 14px 18px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted-bronze);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 16px 18px;
+  font-size: 14px;
+  color: var(--almost-black);
+  border-top: 1px solid var(--soft-beige);
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+  background: var(--soft-beige);
+}
+
+.product-name-cell {
+  font-weight: 600;
+}
+
+.price-cell {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.gift-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.gift-pill.yes {
+  background: #e6e0f2;
+  color: #574a7a;
+}
+
+.gift-pill.no {
+  background: var(--soft-beige);
+  color: var(--warm-taupe);
+}
+
+.actions-cell {
+  white-space: nowrap;
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit-row {
+  background: transparent;
+  border: 1px solid var(--warm-taupe);
+  color: var(--almost-black);
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.btn-edit-row:hover {
+  border-color: var(--almost-black);
+  background: var(--soft-beige);
+}
+
+.btn-delete-row {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #a03d2f;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.btn-delete-row:hover {
+  background: #f7e9e7;
+}
+
+/* Loading skeleton */
+
+.table-skeleton {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-beige);
+  padding: 12px;
+}
+
+.skeleton-row {
+  height: 44px;
+  margin: 8px 0;
+  background: var(--soft-beige);
+  border-radius: 2px;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .form-grid,
+  .form-grid-single {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-products {
+    padding: 24px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  .inline-form {
+    padding: 22px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 12px 14px;
+  }
+}

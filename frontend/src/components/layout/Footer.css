@@ -1,0 +1,206 @@
+/* ==========================================================================
+   Footer: Bishal Care
+   ========================================================================== */
+
+.footer {
+  --ft-ink: var(--almost-black, #1f1b18);
+  --ft-muted: #6f655c;
+  --ft-accent: var(--muted-bronze, #8b7355);
+  --ft-line: rgba(70, 52, 36, 0.14);
+  --ft-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  margin-top: 80px;
+  padding: 64px 0 24px;
+  background: var(--soft-beige, #f5f0e9);
+  border-top: 1px solid var(--ft-line);
+  color: var(--ft-ink);
+}
+
+/* ---------- Grid ---------- */
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.3fr;
+  gap: 48px 40px;
+  padding-bottom: 48px;
+}
+
+/* ---------- Brand ---------- */
+
+.footer__brand {
+  margin: 0 0 16px;
+  font-family: var(--heading-font, inherit);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ft-ink);
+}
+
+.footer__blurb {
+  max-width: 340px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--ft-muted);
+}
+
+.footer__social {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.footer__social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  color: var(--ft-accent);
+  border: 1px solid var(--ft-line);
+  border-radius: 50%;
+  text-decoration: none;
+  transition: color 0.3s var(--ft-ease),
+              background 0.3s var(--ft-ease),
+              border-color 0.3s var(--ft-ease),
+              transform 0.3s var(--ft-ease);
+}
+
+.footer__social a:hover {
+  color: #fff;
+  background: var(--ft-accent);
+  border-color: var(--ft-accent);
+  transform: translateY(-2px);
+}
+
+/* ---------- Columns ---------- */
+
+.footer__heading {
+  margin: 0 0 18px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ft-ink);
+}
+
+.footer__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer__link {
+  display: inline-block;
+  padding: 5px 0;
+  font-size: 14px;
+  color: var(--ft-muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.footer__link:hover {
+  color: var(--ft-accent);
+  border-bottom-color: currentColor;
+  text-decoration: none;
+}
+
+/* ---------- Contact ---------- */
+
+.footer__contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 16px;
+}
+
+.footer__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ft-accent);
+}
+
+.footer__value {
+  font-size: 14px;
+  color: var(--ft-muted);
+}
+
+.footer__email {
+  align-self: flex-start;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Bottom bar ---------- */
+
+.footer__bottom {
+  padding-top: 22px;
+  text-align: center;
+  border-top: 1px solid var(--ft-line);
+}
+
+.footer__bottom p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ft-muted);
+}
+
+/* ---------- Focus ---------- */
+
+.footer a:focus-visible {
+  outline: 2px solid var(--ft-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 992px) {
+  .footer__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 32px;
+  }
+
+  .footer__brand-col,
+  .footer__contact {
+    grid-column: 1 / -1;
+  }
+
+  .footer__blurb {
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer {
+    margin-top: 56px;
+    padding: 44px 0 20px;
+  }
+
+  .footer__grid {
+    gap: 32px 24px;
+    padding-bottom: 36px;
+  }
+
+  .footer__brand {
+    font-size: 22px;
+  }
+
+  .footer__link {
+    padding: 8px 0; /* comfortable tap target */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer__social a,
+  .footer__link {
+    transition: none;
+  }
+
+  .footer__social a:hover {
+    transform: none;
+  }
+}

@@ -1,0 +1,240 @@
+.contact-page {
+  padding-bottom: 80px;
+}
+
+.contact-hero {
+  background: var(--soft-beige);
+  padding: 90px 0;
+  text-align: center;
+  border-bottom: 1px solid var(--warm-taupe);
+}
+
+.contact-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-hero h1 {
+  font-size: 48px;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+  color: var(--almost-black);
+  font-weight: 500;
+}
+
+.hero-subtitle {
+  font-size: 17px;
+  color: var(--muted-bronze);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  margin-bottom: 0;
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 60px;
+  margin-top: 60px;
+}
+
+.contact-form-section h2 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 28px;
+  color: var(--almost-black);
+}
+
+.success-message {
+  background: #eef1e9;
+  color: #4a5d45;
+  padding: 14px 16px;
+  margin-bottom: 24px;
+  border-left: 2px solid #5a7052;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--muted-bronze);
+  margin-bottom: 8px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--warm-taupe);
+  background: var(--pure-white);
+  font-size: 15px;
+  color: var(--almost-black);
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--muted-bronze);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+}
+
+.btn-full {
+  width: 100%;
+  padding: 16px;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  margin-top: 6px;
+}
+
+.contact-info-section h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 26px;
+  color: var(--almost-black);
+}
+
+.info-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 36px;
+}
+
+.info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--pure-white);
+  border: 1px solid var(--soft-beige);
+  padding: 20px;
+  transition: border-color 0.25s ease;
+}
+
+.info-card:hover {
+  border-color: var(--warm-taupe);
+}
+
+.info-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--soft-beige);
+  color: var(--muted-bronze);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-card-text h4 {
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: var(--almost-black);
+  font-weight: 600;
+}
+
+.info-card-text p {
+  font-size: 14px;
+  color: var(--warm-taupe);
+  margin-bottom: 2px;
+}
+
+.social-section {
+  background: var(--pure-white);
+  padding: 26px;
+  border: 1px solid var(--soft-beige);
+  margin-bottom: 24px;
+}
+
+.social-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--almost-black);
+}
+
+.social-section p {
+  font-size: 14px;
+  color: var(--warm-taupe);
+  margin-bottom: 18px;
+}
+
+.social-links {
+  display: flex;
+  gap: 12px;
+}
+
+.social-links a {
+  padding: 10px 22px;
+  background: var(--almost-black);
+  color: var(--pure-white);
+  text-decoration: none;
+  transition: opacity 0.25s ease;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.social-links a:hover {
+  opacity: 0.8;
+}
+
+.faq-quick {
+  background: var(--soft-beige);
+  padding: 24px;
+}
+
+.faq-quick h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--almost-black);
+}
+
+.faq-quick ul {
+  list-style: none;
+  padding: 0;
+}
+
+.faq-quick li {
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: var(--almost-black);
+}
+
+.faq-quick li:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 992px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contact-hero h1 {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 576px) {
+  .contact-hero {
+    padding: 60px 0;
+  }
+
+  .contact-hero h1 {
+    font-size: 28px;
+  }
+
+  .info-card {
+    padding: 16px;
+  }
+}

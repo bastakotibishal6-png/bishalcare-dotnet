@@ -1,0 +1,352 @@
+.membership-page {
+  padding-bottom: 80px;
+}
+
+.membership-hero {
+  background: var(--almost-black);
+  padding: 80px 0;
+  text-align: center;
+  color: var(--pure-white);
+}
+
+.membership-hero h1 {
+  font-size: 46px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  color: var(--pure-white);
+}
+
+.membership-hero .hero-subtitle {
+  font-size: 17px;
+  color: #D9CFC2;
+  font-weight: 400;
+}
+
+/* Benefits */
+
+.benefits-section {
+  margin: 70px 0;
+}
+
+.section-title {
+  font-size: 34px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 44px;
+  color: var(--almost-black);
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.benefit-card {
+  background: var(--pure-white);
+  padding: 34px 28px;
+  text-align: center;
+  border: 1px solid var(--soft-beige);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.07);
+  border-color: var(--warm-taupe);
+}
+
+.benefit-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: var(--soft-beige);
+  color: var(--muted-bronze);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.benefit-card h3 {
+  font-size: 19px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--almost-black);
+}
+
+.benefit-card p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--warm-taupe);
+}
+
+/* Pricing */
+
+.pricing-section {
+  max-width: 460px;
+  margin: 60px auto;
+  text-align: center;
+}
+
+.pricing-card {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-beige);
+  border-top: 3px solid var(--muted-bronze);
+  padding: 46px 36px;
+  position: relative;
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--muted-bronze);
+  color: var(--pure-white);
+  padding: 7px 22px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+}
+
+.pricing-card h2 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 26px;
+  color: var(--almost-black);
+}
+
+.price-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.currency {
+  font-size: 20px;
+  color: var(--muted-bronze);
+  margin-right: 5px;
+}
+
+.amount {
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--almost-black);
+}
+
+.period {
+  font-size: 16px;
+  color: var(--warm-taupe);
+  margin-left: 5px;
+}
+
+.savings-text {
+  font-size: 14px;
+  color: #5a7052;
+  margin-bottom: 28px;
+  font-weight: 600;
+}
+
+.btn-large {
+  padding: 17px 40px;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  width: 100%;
+}
+
+.status-loading p {
+  color: var(--warm-taupe);
+  font-size: 14px;
+  padding: 16px 0;
+}
+
+.member-active-box {
+  background: var(--soft-beige);
+  border: 1px solid var(--muted-bronze);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.member-active-title {
+  color: var(--muted-bronze);
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0;
+}
+
+.member-active-sub {
+  font-size: 12px;
+  color: var(--warm-taupe);
+  margin: 6px 0 0;
+}
+
+.logged-in-as {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--warm-taupe);
+  text-align: center;
+}
+
+/* Comparison table */
+
+.comparison-section {
+  margin: 70px 0;
+}
+
+.comparison-table {
+  max-width: 880px;
+  margin: 0 auto;
+  background: var(--pure-white);
+  border: 1px solid var(--soft-beige);
+}
+
+.comparison-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  background: var(--soft-beige);
+  font-weight: 600;
+}
+
+.header-cell {
+  padding: 18px;
+  text-align: center;
+  font-size: 15px;
+  color: var(--almost-black);
+}
+
+.header-cell.highlight {
+  background: var(--muted-bronze);
+  color: var(--pure-white);
+}
+
+.comparison-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  border-top: 1px solid var(--soft-beige);
+}
+
+.row-label {
+  padding: 18px;
+  font-weight: 600;
+  color: var(--almost-black);
+  font-size: 14px;
+}
+
+.row-cell {
+  padding: 18px;
+  text-align: center;
+  color: var(--warm-taupe);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.row-cell.highlight {
+  background: rgba(139, 115, 85, 0.05);
+  color: var(--almost-black);
+  font-weight: 600;
+}
+
+/* FAQ */
+
+.faq-section {
+  margin: 70px auto;
+  max-width: 880px;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faq-item {
+  background: var(--soft-beige);
+  padding: 26px 28px;
+  border-left: 2px solid var(--muted-bronze);
+  transition: box-shadow 0.25s ease, border-left-color 0.25s ease;
+}
+
+.faq-item:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  border-left-color: var(--almost-black);
+}
+
+.faq-item h4 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--almost-black);
+}
+
+.faq-item p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--warm-taupe);
+}
+
+/* CTA */
+
+.cta-section {
+  margin: 70px 0 40px;
+}
+
+.cta-content {
+  background: var(--soft-beige);
+  padding: 56px 40px;
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.cta-content h2 {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--almost-black);
+}
+
+.cta-content p {
+  font-size: 15px;
+  margin-bottom: 26px;
+  color: var(--warm-taupe);
+}
+
+@media (max-width: 768px) {
+  .membership-hero h1 {
+    font-size: 32px;
+  }
+
+  .section-title {
+    font-size: 26px;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-header,
+  .comparison-row {
+    grid-template-columns: 1.5fr 1fr 1fr;
+  }
+
+  .header-cell,
+  .row-label,
+  .row-cell {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+
+  .pricing-card {
+    padding: 36px 22px;
+  }
+
+  .amount {
+    font-size: 48px;
+  }
+
+  .faq-item {
+    padding: 20px;
+  }
+}

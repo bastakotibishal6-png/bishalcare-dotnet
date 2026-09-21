@@ -1,0 +1,384 @@
+/* ==========================================================================
+   ProductCard: Bisahl Care
+   Uses your existing CSS variables, with fallbacks so it never renders unstyled.
+   ========================================================================== */
+
+.product-card {
+  --pc-surface: var(--pure-white, #ffffff);
+  --pc-canvas: var(--soft-beige, #f5f0e9);
+  --pc-ink: var(--almost-black, #1f1b18);
+  --pc-accent: var(--muted-bronze, #8b7355);
+  --pc-muted: #7d7268;
+  --pc-line: rgba(70, 52, 36, 0.12);
+  --pc-star: #b98b4e;
+  --pc-star-empty: #ddd5cb;
+  --pc-image-ratio: 1 / 1; /* try 4 / 5 for a taller, editorial crop */
+  --pc-radius: 4px;
+  --pc-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--pc-surface);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--pc-radius);
+  overflow: hidden;
+  transition: transform 0.35s var(--pc-ease),
+              box-shadow 0.35s var(--pc-ease),
+              border-color 0.35s var(--pc-ease);
+}
+
+.product-card:hover,
+.product-card:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(70, 52, 36, 0.22);
+  box-shadow: 0 16px 32px -14px rgba(70, 52, 36, 0.25);
+}
+
+/* ---------- Media ---------- */
+
+.product-card__media {
+  position: relative;
+  aspect-ratio: var(--pc-image-ratio);
+  background: var(--pc-canvas);
+  overflow: hidden;
+}
+
+.product-card__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--pc-ease), opacity 0.3s ease;
+}
+
+.product-card:hover .product-card__image {
+  transform: scale(1.04);
+}
+
+.product-card--out .product-card__image {
+  opacity: 0.55;
+  filter: grayscale(0.35);
+}
+
+.product-card__flag {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 2;
+  padding: 5px 9px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pc-ink);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 2px;
+}
+
+/* ---------- Wishlist ---------- */
+
+.product-card__wish {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  color: var(--pc-ink);
+  background: rgba(255, 255, 255, 0.92);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.25s ease, background 0.25s ease, transform 0.25s var(--pc-ease);
+}
+
+.product-card__wish:hover {
+  color: var(--pc-accent);
+  background: #fff;
+  transform: scale(1.08);
+}
+
+.product-card__wish.is-active {
+  color: var(--pc-accent);
+}
+
+.product-card__wish.is-active svg {
+  fill: currentColor;
+}
+
+/* ---------- Body ---------- */
+
+.product-card__body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 16px 16px 18px;
+}
+
+.product-card__brand {
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pc-muted);
+}
+
+.product-card__name {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--pc-ink);
+  min-height: 2.8em; /* keeps cards aligned when names wrap to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Stretched link: the whole card is clickable, buttons sit above it */
+.product-card__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.product-card__link:hover {
+  text-decoration: none;
+}
+
+.product-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.product-card__link:focus-visible {
+  outline: none;
+}
+
+.product-card__link:focus-visible::after {
+  outline: 2px solid var(--pc-accent);
+  outline-offset: -2px;
+}
+
+/* ---------- Tags ---------- */
+
+.product-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.product-card__tag {
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pc-accent);
+  border: 1px solid var(--pc-line);
+  border-radius: 999px;
+}
+
+/* ---------- Rating ---------- */
+
+.product-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.product-card__stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.product-card__star {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.product-card__star--full {
+  color: var(--pc-star);
+}
+
+.product-card__star--empty {
+  color: var(--pc-star-empty);
+}
+
+.product-card__star--half {
+  background: linear-gradient(90deg, var(--pc-star) 50%, var(--pc-star-empty) 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.product-card__reviews {
+  font-size: 12px;
+  color: var(--pc-muted);
+}
+
+/* ---------- Footer: price, stock, cart ---------- */
+
+.product-card__footer {
+  margin-top: auto;
+}
+
+.product-card__price {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--pc-ink);
+}
+
+.product-card__stock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--pc-muted);
+}
+
+.product-card__stock::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6f9a7a;
+}
+
+.product-card__stock--low {
+  color: #9a6a2f;
+}
+
+.product-card__stock--low::before {
+  background: #c8893a;
+}
+
+.product-card__cart {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 14px;
+  padding: 0 16px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pc-ink);
+  background: transparent;
+  border: 1px solid var(--pc-ink);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.product-card__cart:hover:not(:disabled) {
+  color: var(--pc-surface);
+  background: var(--pc-ink);
+}
+
+.product-card__cart.is-loading {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.product-card__cart.is-added,
+.product-card__cart.is-added:hover:not(:disabled) {
+  color: #fff;
+  background: var(--pc-accent);
+  border-color: var(--pc-accent);
+}
+
+.product-card__cart:disabled {
+  cursor: not-allowed;
+  color: var(--pc-muted);
+  border-color: var(--pc-line);
+  background: transparent;
+}
+
+.product-card__cart:focus-visible,
+.product-card__wish:focus-visible {
+  outline: 2px solid var(--pc-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 768px) {
+  .product-card__body {
+    padding: 12px 12px 14px;
+  }
+
+  .product-card__name {
+    font-size: 14px;
+  }
+
+  .product-card__price {
+    font-size: 16px;
+  }
+
+  .product-card__wish {
+    top: 8px;
+    right: 8px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .product-card__cart {
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card__cart svg {
+    display: none; /* keeps the label on one line in narrow 2-column grids */
+  }
+}
+
+/* No lift on touch devices (there is no real hover) */
+@media (hover: none) {
+  .product-card:hover,
+  .product-card:focus-within {
+    transform: none;
+  }
+
+  .product-card:hover .product-card__image {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card,
+  .product-card__image,
+  .product-card__wish,
+  .product-card__cart {
+    transition: none;
+  }
+
+  .product-card:hover,
+  .product-card:focus-within,
+  .product-card:hover .product-card__image {
+    transform: none;
+  }
+}

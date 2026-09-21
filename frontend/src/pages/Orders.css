@@ -1,0 +1,200 @@
+.admin-orders {
+  padding: 40px;
+}
+
+.orders-header {
+  margin-bottom: 28px;
+}
+
+.orders-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--almost-black);
+  margin-bottom: 6px;
+}
+
+.orders-subtitle {
+  font-size: 14px;
+  color: var(--warm-taupe);
+}
+
+.error-text {
+  background: #f7e9e7;
+  color: #a03d2f;
+  border-left: 2px solid #a03d2f;
+  padding: 12px 16px;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.empty-orders {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-beige);
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.empty-orders p {
+  color: var(--warm-taupe);
+  font-size: 15px;
+}
+
+/* Table */
+
+.table-wrapper {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-beige);
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.data-table thead {
+  background: var(--soft-beige);
+}
+
+.data-table th {
+  text-align: left;
+  padding: 14px 18px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted-bronze);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 16px 18px;
+  font-size: 14px;
+  color: var(--almost-black);
+  border-top: 1px solid var(--soft-beige);
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+  background: var(--soft-beige);
+}
+
+.order-id-cell {
+  font-weight: 600;
+  color: var(--muted-bronze);
+  white-space: nowrap;
+}
+
+.customer-name {
+  font-weight: 500;
+}
+
+.customer-email {
+  font-size: 12px;
+  color: var(--warm-taupe);
+  margin-top: 2px;
+}
+
+.total-cell {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.date-cell,
+.tracking-cell {
+  color: var(--warm-taupe);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* Status select */
+
+.status-select {
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  background-color: var(--soft-beige);
+  color: var(--almost-black);
+  min-width: 120px;
+}
+
+.status-select:focus {
+  outline: none;
+  border-color: var(--muted-bronze);
+}
+
+.status-select-pending {
+  background-color: #f6ecd9;
+  color: #8a6d1f;
+}
+
+.status-select-paid {
+  background-color: #e3ecdd;
+  color: #4a6741;
+}
+
+.status-select-processing {
+  background-color: #dfe8f0;
+  color: #34576f;
+}
+
+.status-select-shipped {
+  background-color: #e6e0f2;
+  color: #574a7a;
+}
+
+.status-select-delivered {
+  background-color: #e3ecdd;
+  color: #4a6741;
+}
+
+.status-select-cancelled {
+  background-color: #f2ddda;
+  color: #8f3f34;
+}
+
+/* Loading skeleton */
+
+.table-skeleton {
+  background: var(--pure-white);
+  border: 1px solid var(--soft-beige);
+  padding: 12px;
+}
+
+.skeleton-row {
+  height: 44px;
+  margin: 8px 0;
+  background: var(--soft-beige);
+  border-radius: 2px;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .admin-orders {
+    padding: 24px;
+  }
+
+  .orders-header h1 {
+    font-size: 24px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 12px 14px;
+  }
+}
