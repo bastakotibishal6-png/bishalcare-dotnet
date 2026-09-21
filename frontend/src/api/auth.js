@@ -1,15 +1,16 @@
 import client from './client';
 
 /**
- * Admin Login
- *
+ * =====================================================
+ * ADMIN LOGIN
+ * =====================================================
  * API:
  * POST /api/Users/Login
  */
 export const login = async (email, password) => {
   try {
     const response = await client.post('/Users/Login', {
-      email,
+      email: email.trim(),
       password,
     });
 
@@ -17,9 +18,7 @@ export const login = async (email, password) => {
 
     console.log('Admin login API response:', data);
 
-    // =================================================
-    // GET TOKEN
-    // =================================================
+    // Get JWT token from possible response formats
     const token =
       data?.token ||
       data?.Token ||
@@ -31,18 +30,16 @@ export const login = async (email, password) => {
 
     if (!token) {
       console.error(
-        'Login response did not contain a JWT token:',
+        'No token returned from login:',
         data
       );
 
       throw new Error(
-        'Login succeeded, but the server did not return an authentication token.'
+        'Login succeeded, but no authentication token was returned by the server.'
       );
     }
 
-    // =================================================
-    // GET USER INFORMATION
-    // =================================================
+    // Get user information
     const user =
       data?.user ||
       data?.User ||
@@ -51,11 +48,13 @@ export const login = async (email, password) => {
       data?.data ||
       {};
 
-    // =================================================
-    // SAVE ADMIN SESSION
-    // =================================================
-    localStorage.setItem('admin_token', token);
+    // Save admin token
+    localStorage.setItem(
+      'admin_token',
+      token
+    );
 
+    // Save email
     localStorage.setItem(
       'admin_email',
       user?.email ||
@@ -63,6 +62,7 @@ export const login = async (email, password) => {
         email
     );
 
+    // Get admin name
     const firstName =
       user?.firstName ||
       user?.FirstName ||
@@ -76,18 +76,18 @@ export const login = async (email, password) => {
     const fullName =
       `${firstName} ${lastName}`.trim();
 
-    if (fullName) {
-      localStorage.setItem('admin_name', fullName);
-    } else {
-      localStorage.setItem(
-        'admin_name',
-        user?.name ||
-          user?.Name ||
-          email
-      );
-    }
+    const adminName =
+      fullName ||
+      user?.name ||
+      user?.Name ||
+      email;
 
-    // Save complete response/user for later use
+    localStorage.setItem(
+      'admin_name',
+      adminName
+    );
+
+    // Save complete admin user
     localStorage.setItem(
       'admin_user',
       JSON.stringify(user)
@@ -100,16 +100,20 @@ export const login = async (email, password) => {
       data,
     };
   } catch (error) {
-    console.error('Admin login API error:', error);
+    console.error(
+      'Admin login error:',
+      error
+    );
 
-    // Preserve the original Axios error so the Login
-    // component can display the backend message.
     throw error;
   }
 };
 
+
 /**
- * Logout Admin
+ * =====================================================
+ * ADMIN LOGOUT
+ * =====================================================
  */
 export const logout = () => {
   localStorage.removeItem('admin_token');
@@ -118,29 +122,108 @@ export const logout = () => {
   localStorage.removeItem('admin_user');
 };
 
+
 /**
- * Check whether an admin token exists
+ * =====================================================
+ * CHECK ADMIN LOGIN
+ * =====================================================
+ *
+ * Used by ProtectedRoute.jsx
  */
 export const isAdminLoggedIn = () => {
-  return Boolean(localStorage.getItem('admin_token'));
+  return Boolean(
+    localStorage.getItem('admin_token')
+  );
 };
 
+
 /**
- * Get currently stored admin token
+ * =====================================================
+ * CHECK GENERAL LOGIN
+ * =====================================================
+ *
+ * Used by ProtectedRoute.jsx
+ */
+export const isLoggedIn = () => {
+  return Boolean(
+    localStorage.getItem('admin_token') ||
+    localStorage.getItem('token')
+  );
+};
+
+
+/**
+ * =====================================================
+ * GET ADMIN TOKEN
+ * =====================================================
  */
 export const getAdminToken = () => {
-  return localStorage.getItem('admin_token');
+  return localStorage.getItem(
+    'admin_token'
+  );
 };
 
+
 /**
- * Get stored admin user
+ * =====================================================
+ * GET ADMIN NAME
+ * =====================================================
+ *
+ * Used by Sidebar.jsx and Dashboard.jsx
+ */
+export const getAdminName = () => {
+  const savedName =
+    localStorage.getItem('admin_name');
+
+  if (savedName) {
+    return savedName;
+  }
+
+  const savedEmail =
+    localStorage.getItem('admin_email');
+
+  if (savedEmail) {
+    return savedEmail;
+  }
+
+  return 'Admin';
+};
+
+
+/**
+ * =====================================================
+ * GET ADMIN USER
+ * =====================================================
  */
 export const getAdminUser = () => {
   try {
-    const user = localStorage.getItem('admin_user');
+    const user =
+      localStorage.getItem('admin_user');
 
-    return user ? JSON.parse(user) : null;
-  } catch {
+    if (!user) {
+      return null;
+    }
+
+    return JSON.parse(user);
+  } catch (error) {
+    console.error(
+      'Unable to read admin user:',
+      error
+    );
+
     return null;
   }
+};
+
+
+/**
+ * =====================================================
+ * CLEAR ADMIN SESSION
+ * =====================================================
+ */
+export const clearAdminSession = () => {
+  localStorage.removeItem('admin_token');
+  localStorage.removeItem('admin_name');
+  localStorage.removeItem('admin_email');
+  localStorage.removeItem('admin_user');
 };
