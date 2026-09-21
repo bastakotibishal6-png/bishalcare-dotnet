@@ -12,6 +12,9 @@ export default function Users() {
     setError('');
 
     try {
+      // client.js already contains /api in baseURL
+      // Final URL:
+      // https://bishalvoid-001-site1.ktempurl.com/api/Admin/Users
       const res = await client.get('/Admin/Users');
 
       console.log('Admin users response:', res.data);
@@ -26,9 +29,7 @@ export default function Users() {
         );
 
         setUsers([]);
-        setError(
-          'Invalid users response from server.'
-        );
+        setError('Invalid users response from server.');
       }
     } catch (err) {
       console.error('Load users error:', err);
@@ -54,8 +55,11 @@ export default function Users() {
   return (
     <div className="admin-users-page">
 
+      {/* HEADER */}
       <div className="au-header">
+
         <div className="au-header-text">
+
           <h1 className="au-title">
             Customer Directory
           </h1>
@@ -63,6 +67,7 @@ export default function Users() {
           <p className="au-subtitle">
             Manage and view registered Bishal Care customers.
           </p>
+
         </div>
 
         <button
@@ -71,35 +76,50 @@ export default function Users() {
           onClick={loadUsers}
           disabled={loading}
         >
-          {loading ? 'Refreshing...' : 'Refresh Data'}
+          {loading
+            ? 'Refreshing...'
+            : 'Refresh Data'}
         </button>
+
       </div>
 
+      {/* ERROR */}
       {error && (
         <div className="au-error-banner">
+
           <span className="au-error-icon">
             ⚠️
           </span>
 
           <p>{error}</p>
+
         </div>
       )}
 
+      {/* LOADING */}
       {loading ? (
+
         <div className="au-loading-state">
+
           <div className="au-spinner"></div>
 
           <p>
             Loading customer data...
           </p>
+
         </div>
+
       ) : (
+
+        /* USERS TABLE */
         <div className="au-table-container">
+
           <div className="au-table-wrapper">
 
             <table className="au-table">
 
               <thead>
+
                 <tr>
                   <th>Customer Name</th>
                   <th>Contact Info</th>
@@ -108,21 +128,31 @@ export default function Users() {
                   <th>Joined Date</th>
                   <th>Last Login</th>
                 </tr>
+
               </thead>
 
               <tbody>
+
                 {Array.isArray(users) &&
                   users.map((u) => (
-                    <tr key={u.id}>
 
+                    <tr
+                      key={u.id}
+                    >
+
+                      {/* CUSTOMER NAME */}
                       <td>
+
                         <span className="au-name">
                           {u.firstName || ''}{' '}
                           {u.lastName || ''}
                         </span>
+
                       </td>
 
+                      {/* CONTACT */}
                       <td>
+
                         <div className="au-contact-info">
 
                           <span className="au-email">
@@ -136,15 +166,21 @@ export default function Users() {
                           )}
 
                         </div>
+
                       </td>
 
+                      {/* CITY */}
                       <td>
+
                         <span className="au-text-muted">
                           {u.city || '-'}
                         </span>
+
                       </td>
 
+                      {/* STATUS */}
                       <td>
+
                         <span
                           className={`au-badge ${
                             u.isMember
@@ -156,49 +192,69 @@ export default function Users() {
                             ? 'Member'
                             : 'Standard'}
                         </span>
+
                       </td>
 
+                      {/* JOINED DATE */}
                       <td>
+
                         <span className="au-text-muted">
+
                           {u.createdDate
                             ? new Date(
                                 u.createdDate
                               ).toLocaleDateString()
                             : '-'}
+
                         </span>
+
                       </td>
 
+                      {/* LAST LOGIN */}
                       <td>
+
                         <span className="au-text-muted">
+
                           {u.lastLoginDate
                             ? new Date(
                                 u.lastLoginDate
                               ).toLocaleDateString()
                             : 'Never'}
+
                         </span>
+
                       </td>
 
                     </tr>
+
                   ))}
 
+                {/* EMPTY STATE */}
                 {!loading &&
                   Array.isArray(users) &&
                   users.length === 0 && (
+
                     <tr>
+
                       <td
                         colSpan="6"
                         className="au-empty-state"
                       >
                         No customers found in the database.
                       </td>
+
                     </tr>
+
                   )}
+
               </tbody>
 
             </table>
 
           </div>
+
         </div>
+
       )}
 
     </div>
