@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import client from '../api/client';
 import './Products.css';
 
-// Fields match your actual Models/Product.cs
 const emptyForm = {
   name: '',
   brand: '',
@@ -52,7 +51,7 @@ export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState({ ...emptyForm });
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
@@ -62,6 +61,8 @@ export default function Products() {
 
     try {
       // client.js already contains /api in baseURL
+      // Final URL:
+      // https://bishalvoid-001-site1.ktempurl.com/api/Products/Admin/All
       const res = await client.get('/Products/Admin/All');
 
       console.log('Admin products response:', res.data);
@@ -82,6 +83,8 @@ export default function Products() {
       setError(
         err?.response?.data?.message ||
           err?.response?.data?.Message ||
+          err?.response?.data?.error ||
+          err?.response?.data?.Error ||
           'Could not load products. Make sure you are logged in with an Admin account.'
       );
     } finally {
@@ -162,7 +165,9 @@ export default function Products() {
   }
 
   async function handleDelete(id) {
-    if (!window.confirm('Delete this product?')) {
+    const confirmed = window.confirm('Delete this product?');
+
+    if (!confirmed) {
       return;
     }
 
@@ -185,35 +190,61 @@ export default function Products() {
     }
   }
 
+  function handleCancel() {
+    setShowForm(false);
+    setEditingId(null);
+    setForm({ ...emptyForm });
+    setError('');
+  }
+
   return (
     <div className="admin-products">
+      {/* HEADER */}
       <div className="page-header">
         <div>
           <h1>Products</h1>
+
           <p className="products-subtitle">
             Manage your product catalog
           </p>
         </div>
 
-        <button className="btn-add" onClick={startCreate}>
+        <button
+          type="button"
+          className="btn-add"
+          onClick={startCreate}
+        >
           + Add Product
         </button>
       </div>
 
+      {/* ERROR */}
       {error && <p className="error-text">{error}</p>}
 
+      {/* ADD / EDIT FORM */}
       {showForm && (
-        <form className="inline-form" onSubmit={handleSubmit}>
-          <h3>{editingId ? 'Edit Product' : 'New Product'}</h3>
+        <form
+          className="inline-form"
+          onSubmit={handleSubmit}
+        >
+          <h3>
+            {editingId ? 'Edit Product' : 'New Product'}
+          </h3>
 
-          <div className="form-section-label">Basic Info</div>
+          {/* BASIC INFO */}
+          <div className="form-section-label">
+            Basic Info
+          </div>
 
           <div className="form-grid">
             <input
               placeholder="Name *"
               value={form.name}
               onChange={(e) =>
-                setForm({ ...form, name: e.target.value })
+                setForm({
+                  ...form,
+                  name: e.target.value
+                })
               }
               required
             />
@@ -222,7 +253,10 @@ export default function Products() {
               placeholder="Brand"
               value={form.brand}
               onChange={(e) =>
-                setForm({ ...form, brand: e.target.value })
+                setForm({
+                  ...form,
+                  brand: e.target.value
+                })
               }
             />
 
@@ -230,7 +264,10 @@ export default function Products() {
               placeholder="Category *"
               value={form.category}
               onChange={(e) =>
-                setForm({ ...form, category: e.target.value })
+                setForm({
+                  ...form,
+                  category: e.target.value
+                })
               }
               required
             />
@@ -247,6 +284,7 @@ export default function Products() {
             />
           </div>
 
+          {/* PRICING & STOCK */}
           <div className="form-section-label">
             Pricing &amp; Stock
           </div>
@@ -256,9 +294,13 @@ export default function Products() {
               placeholder="Price *"
               type="number"
               step="0.01"
+              min="0"
               value={form.price}
               onChange={(e) =>
-                setForm({ ...form, price: e.target.value })
+                setForm({
+                  ...form,
+                  price: e.target.value
+                })
               }
               required
             />
@@ -267,13 +309,17 @@ export default function Products() {
               placeholder="Size (e.g. 50ml)"
               value={form.size}
               onChange={(e) =>
-                setForm({ ...form, size: e.target.value })
+                setForm({
+                  ...form,
+                  size: e.target.value
+                })
               }
             />
 
             <input
               placeholder="Stock Quantity *"
               type="number"
+              min="0"
               value={form.stockQuantity}
               onChange={(e) =>
                 setForm({
@@ -296,7 +342,10 @@ export default function Products() {
             />
           </div>
 
-          <div className="form-section-label">Details</div>
+          {/* DETAILS */}
+          <div className="form-section-label">
+            Details
+          </div>
 
           <div className="form-grid">
             <input
@@ -322,10 +371,14 @@ export default function Products() {
             />
           </div>
 
-          <div className="form-section-label">Images</div>
+          {/* IMAGES */}
+          <div className="form-section-label">
+            Images
+          </div>
 
           <div className="form-grid">
             <input
+              type="url"
               placeholder="Image URL 1"
               value={form.imageUrl1}
               onChange={(e) =>
@@ -337,6 +390,7 @@ export default function Products() {
             />
 
             <input
+              type="url"
               placeholder="Image URL 2"
               value={form.imageUrl2}
               onChange={(e) =>
@@ -348,6 +402,7 @@ export default function Products() {
             />
 
             <input
+              type="url"
               placeholder="Image URL 3"
               value={form.imageUrl3}
               onChange={(e) =>
@@ -359,6 +414,7 @@ export default function Products() {
             />
           </div>
 
+          {/* DESCRIPTION */}
           <div className="form-section-label">
             Description
           </div>
@@ -387,6 +443,7 @@ export default function Products() {
             />
           </div>
 
+          {/* CHECKBOXES */}
           <div className="checkbox-row">
             <label className="checkbox-label">
               <input
@@ -399,6 +456,7 @@ export default function Products() {
                   })
                 }
               />
+
               Vegan
             </label>
 
@@ -413,6 +471,7 @@ export default function Products() {
                   })
                 }
               />
+
               Cruelty-Free
             </label>
 
@@ -427,11 +486,17 @@ export default function Products() {
                   })
                 }
               />
-              Is Mini Gift (used for free-gift promotions,
-              hidden from shop)
+
+              Is Mini Gift
             </label>
           </div>
 
+          <p className="form-help-text">
+            Mini Gift products can be used for free-gift
+            promotions and hidden from the normal shop.
+          </p>
+
+          {/* FORM BUTTONS */}
           <div className="form-actions">
             <button
               type="submit"
@@ -443,11 +508,7 @@ export default function Products() {
             <button
               type="button"
               className="btn-cancel"
-              onClick={() => {
-                setShowForm(false);
-                setEditingId(null);
-                setForm({ ...emptyForm });
-              }}
+              onClick={handleCancel}
             >
               Cancel
             </button>
@@ -455,10 +516,14 @@ export default function Products() {
         </form>
       )}
 
+      {/* PRODUCTS TABLE */}
       {loading ? (
         <div className="table-skeleton">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div className="skeleton-row" key={i}></div>
+            <div
+              className="skeleton-row"
+              key={i}
+            />
           ))}
         </div>
       ) : products.length === 0 ? (
@@ -487,23 +552,28 @@ export default function Products() {
               {products.map((p) => (
                 <tr key={p.productId}>
                   <td className="product-name-cell">
-                    {p.name}
+                    {p.name || '-'}
                   </td>
 
-                  <td>{p.brand}</td>
+                  <td>
+                    {p.brand || '-'}
+                  </td>
 
                   <td>
-                    {p.category}
+                    {p.category || '-'}
+
                     {p.subCategory
                       ? ` / ${p.subCategory}`
                       : ''}
                   </td>
 
                   <td className="price-cell">
-                    RS {p.price}
+                    RS {p.price ?? 0}
                   </td>
 
-                  <td>{p.stockQuantity}</td>
+                  <td>
+                    {p.stockQuantity ?? 0}
+                  </td>
 
                   <td>
                     <span
@@ -517,6 +587,7 @@ export default function Products() {
 
                   <td className="actions-cell">
                     <button
+                      type="button"
                       className="btn-edit-row"
                       onClick={() => startEdit(p)}
                     >
@@ -524,6 +595,7 @@ export default function Products() {
                     </button>
 
                     <button
+                      type="button"
                       className="btn-delete-row"
                       onClick={() =>
                         handleDelete(p.productId)

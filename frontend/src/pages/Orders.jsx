@@ -2,8 +2,14 @@ import { useEffect, useState } from 'react';
 import client from '../api/client';
 import './Orders.css';
 
-// Matches the Status values used across OrdersController.cs / AdminController.cs
-const STATUS_OPTIONS = ['Pending', 'Paid', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
+const STATUS_OPTIONS = [
+  'Pending',
+  'Paid',
+  'Processing',
+  'Shipped',
+  'Delivered',
+  'Cancelled'
+];
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -13,11 +19,32 @@ export default function Orders() {
   async function loadOrders() {
     setLoading(true);
     setError('');
+
     try {
+      // client.js already contains /api in baseURL
       const res = await client.get('/Admin/Orders');
-      setOrders(res.data);
+
+      console.log('Admin orders response:', res.data);
+
+      if (Array.isArray(res.data)) {
+        setOrders(res.data);
+      } else {
+        console.error('Unexpected orders response:', res.data);
+        setOrders([]);
+        setError('Invalid orders response from server.');
+      }
     } catch (err) {
-      setError('Could not load orders. Make sure you are logged in with an Admin account.');
+      console.error('Load orders error:', err);
+
+      setOrders([]);
+
+      setError(
+        err?.response?.data?.message ||
+        err?.response?.data?.Message ||
+        err?.response?.data?.error ||
+        err?.response?.data?.Error ||
+        'Could not load orders. Make sure you are logged in with an Admin account.'
+      );
     } finally {
       setLoading(false);
     }
@@ -29,11 +56,25 @@ export default function Orders() {
 
   async function updateStatus(orderId, newStatus) {
     try {
-      await client.put(`/api/Admin/Orders/${orderId}/Status`, { status: newStatus });
-      loadOrders();
+      setError('');
+
+      // client.js already contains /api in baseURL
+      await client.put(
+        `/Admin/Orders/${orderId}/Status`,
+        { status: newStatus }
+      );
+
+      await loadOrders();
     } catch (err) {
-      setError('Could not update order status.');
-      console.error(err);
+      console.error('Update order status error:', err);
+
+      setError(
+        err?.response?.data?.message ||
+        err?.response?.data?.Message ||
+        err?.response?.data?.error ||
+        err?.response?.data?.Error ||
+        'Could not update order status.'
+      );
     }
   }
 
@@ -41,15 +82,25 @@ export default function Orders() {
     <div className="admin-orders">
       <div className="orders-header">
         <h1>Orders</h1>
-        <p className="orders-subtitle">Manage order status and track fulfillment</p>
+
+        <p className="orders-subtitle">
+          Manage order status and track fulfillment
+        </p>
       </div>
 
-      {error && <p className="error-text">{error}</p>}
+      {error && (
+        <p className="error-text">
+          {error}
+        </p>
+      )}
 
       {loading ? (
         <div className="table-skeleton">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div className="skeleton-row" key={i}></div>
+            <div
+              className="skeleton-row"
+              key={i}
+            />
           ))}
         </div>
       ) : orders.length === 0 ? (
@@ -70,29 +121,67 @@ export default function Orders() {
                 <th>Tracking #</th>
               </tr>
             </thead>
+
             <tbody>
               {orders.map((o) => (
                 <tr key={o.orderId}>
-                  <td className="order-id-cell">#{o.orderId}</td>
-                  <td>
-                    <div className="customer-name">{o.customerName}</div>
-                    <div className="customer-email">{o.customerEmail}</div>
+                  <td className="order-id-cell">
+                    #{o.orderId}
                   </td>
-                  <td>{o.itemCount}</td>
-                  <td className="total-cell">RS {o.finalTotal}</td>
+
+                  <td>
+                    <div className="customer-name">
+                      {o.customerName || '-'}
+                    </div>
+
+                    <div className="customer-email">
+                      {o.customerEmail || '-'}
+                    </div>
+                  </td>
+
+                  <td>
+                    {o.itemCount ?? 0}
+                  </td>
+
+                  <td className="total-cell">
+                    RS {o.finalTotal ?? 0}
+                  </td>
+
                   <td>
                     <select
-                      className={`status-select status-select-${o.status?.toLowerCase()}`}
-                      value={o.status}
-                      onChange={(e) => updateStatus(o.orderId, e.target.value)}
+                      className={`status-select status-select-${(
+                        o.status || ''
+                      ).toLowerCase()}`}
+                      value={o.status || 'Pending'}
+                      onChange={(e) =>
+                        updateStatus(
+                          o.orderId,
+                          e.target.value
+                        )
+                      }
                     >
-                      {STATUS_OPTIONS.map((s) => (
-                        <option key={s} value={s}>{s}</option>
+                      {STATUS_OPTIONS.map((status) => (
+                        <option
+                          key={status}
+                          value={status}
+                        >
+                          {status}
+                        </option>
                       ))}
                     </select>
                   </td>
-                  <td className="date-cell">{o.orderDate ? new Date(o.orderDate).toLocaleDateString() : '-'}</td>
-                  <td className="tracking-cell">{o.trackingNumber}</td>
+
+                  <td className="date-cell">
+                    {o.orderDate
+                      ? new Date(
+                          o.orderDate
+                        ).toLocaleDateString()
+                      : '-'}
+                  </td>
+
+                  <td className="tracking-cell">
+                    {o.trackingNumber || '-'}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -102,3 +191,4 @@ export default function Orders() {
     </div>
   );
 }
+
