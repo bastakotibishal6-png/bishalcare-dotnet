@@ -10,10 +10,12 @@ const client = axios.create({
   },
 });
 
-// Add ADMIN JWT
+// Add JWT token
 client.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('admin_token');
+    const token =
+      localStorage.getItem('admin_token') ||
+      localStorage.getItem('token');
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -33,6 +35,7 @@ client.interceptors.response.use(
       (error.response.status === 401 ||
         error.response.status === 403)
     ) {
+      localStorage.removeItem('token');
       localStorage.removeItem('admin_token');
       localStorage.removeItem('admin_name');
       localStorage.removeItem('admin_email');

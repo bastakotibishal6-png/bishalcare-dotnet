@@ -1,62 +1,4 @@
-import axios from 'axios';
-
-// ============================================================
-// API CONFIGURATION
-// ============================================================
-
-export const API_BASE_URL = 'https://bishalvoid-001-site1.ktempurl.com/api';
-
-const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// ============================================================
-// AUTHENTICATION / TOKEN
-// ============================================================
-
-// Add JWT token to every request.
-// Supports both normal user token and admin token.
-api.interceptors.request.use(
-  (config) => {
-    const token =
-      localStorage.getItem('admin_token') ||
-      localStorage.getItem('token');
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Handle unauthorized requests
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (
-      error.response &&
-      (error.response.status === 401 ||
-        error.response.status === 403)
-    ) {
-      const currentPath = window.location.pathname;
-
-      if (currentPath !== '/login') {
-        // Remove both token types
-        localStorage.removeItem('token');
-        localStorage.removeItem('admin_token');
-
-        window.location.href = '/login';
-      }
-    }
-
-    return Promise.reject(error);
-  }
-);
+import client from '../api/client';
 
 // ============================================================
 // ADMIN LOGIN
@@ -65,28 +7,10 @@ api.interceptors.response.use(
 const LOGIN_ENDPOINT = '/Users/Login';
 
 export async function login(email, password) {
-  const response = await api.post(LOGIN_ENDPOINT, {
+  const response = await client.post(LOGIN_ENDPOINT, {
     email,
     password,
   });
-
-  /*
-    Backend can return either:
-
-    {
-      Token,
-      UserId,
-      Email,
-      FirstName,
-      LastName,
-      IsMember,
-      Roles,
-      IsAdmin,
-      Message
-    }
-
-    or camelCase JSON.
-  */
 
   const {
     token,
@@ -104,7 +28,7 @@ export async function login(email, password) {
 
   if (!isAdmin) {
     throw new Error(
-      'This account does not have Admin access. Add its email to AdminSettings:AdminEmails in appsettings.json and restart the backend.'
+      'This account does not have Admin access.'
     );
   }
 
@@ -123,27 +47,30 @@ export async function login(email, password) {
   return response.data;
 }
 
-// Handle both PascalCase and camelCase responses
+// ============================================================
+// HANDLE API RESPONSE KEYS
+// ============================================================
+
 function normalizeKeys(obj) {
   return {
-    token: obj.token || obj.Token,
+    token: obj?.token || obj?.Token,
 
     isAdmin:
-      obj.isAdmin ??
-      obj.IsAdmin ??
+      obj?.isAdmin ??
+      obj?.IsAdmin ??
       false,
 
     firstName:
-      obj.firstName ||
-      obj.FirstName,
+      obj?.firstName ||
+      obj?.FirstName,
 
     lastName:
-      obj.lastName ||
-      obj.LastName,
+      obj?.lastName ||
+      obj?.LastName,
 
     email:
-      obj.email ||
-      obj.Email,
+      obj?.email ||
+      obj?.Email,
   };
 }
 
@@ -184,16 +111,16 @@ export function getAdminName() {
 
 export const productsAPI = {
   getAll: (params) =>
-    api.get('/Products', { params }),
+    client.get('/Products', { params }),
 
   getById: (id) =>
-    api.get(`/Products/${id}`),
+    client.get(`/Products/${id}`),
 
   getCategories: () =>
-    api.get('/Products/Categories'),
+    client.get('/Products/Categories'),
 
   getMiniGifts: () =>
-    api.get('/Products/MiniGifts'),
+    client.get('/Products/MiniGifts'),
 };
 
 // ============================================================
@@ -202,16 +129,16 @@ export const productsAPI = {
 
 export const usersAPI = {
   register: (data) =>
-    api.post('/Users/Register', data),
+    client.post('/Users/Register', data),
 
   login: (data) =>
-    api.post('/Users/Login', data),
+    client.post('/Users/Login', data),
 
   getProfile: () =>
-    api.get('/Users/Profile'),
+    client.get('/Users/Profile'),
 
   updateProfile: (data) =>
-    api.put('/Users/Profile', data),
+    client.put('/Users/Profile', data),
 };
 
 // ============================================================
@@ -220,7 +147,7 @@ export const usersAPI = {
 
 export const cartAPI = {
   getCart: () =>
-    api.get('/Cart'),
+    client.get('/Cart'),
 
   addToCart: (data) => {
     console.log(
@@ -228,20 +155,20 @@ export const cartAPI = {
       data
     );
 
-    return api.post('/Cart/AddItem', data);
+    return client.post('/Cart/AddItem', data);
   },
 
   addItem: (data) =>
-    api.post('/Cart/AddItem', data),
+    client.post('/Cart/AddItem', data),
 
   updateQuantity: (data) =>
-    api.put('/Cart/UpdateQuantity', data),
+    client.put('/Cart/UpdateQuantity', data),
 
   removeItem: (id) =>
-    api.delete(`/Cart/RemoveItem/${id}`),
+    client.delete(`/Cart/RemoveItem/${id}`),
 
   clearCart: () =>
-    api.delete('/Cart/Clear'),
+    client.delete('/Cart/Clear'),
 };
 
 // ============================================================
@@ -250,16 +177,16 @@ export const cartAPI = {
 
 export const ordersAPI = {
   checkout: (data) =>
-    api.post('/Orders/Checkout', data),
+    client.post('/Orders/Checkout', data),
 
   getHistory: () =>
-    api.get('/Orders/History'),
+    client.get('/Orders/History'),
 
   getOrder: (id) =>
-    api.get(`/Orders/${id}`),
+    client.get(`/Orders/${id}`),
 
   trackOrder: (trackingNumber) =>
-    api.get(`/Orders/Track/${trackingNumber}`),
+    client.get(`/Orders/Track/${trackingNumber}`),
 };
 
 // ============================================================
@@ -268,19 +195,22 @@ export const ordersAPI = {
 
 export const membershipAPI = {
   getStatus: () =>
-    api.get('/Membership/Status'),
+    client.get('/Membership/Status'),
 
   join: (data) =>
-    api.post('/Membership/Join', data),
+    client.post('/Membership/Join', data),
 
   renew: () =>
-    api.post('/Membership/Renew'),
+    client.post('/Membership/Renew'),
+
+  cancel: () =>
+    client.post('/Membership/Cancel'),
 
   getBenefits: () =>
-    api.get('/Membership/Benefits'),
+    client.get('/Membership/Benefits'),
 
   getSavings: () =>
-    api.get('/Membership/Savings'),
+    client.get('/Membership/Savings'),
 };
 
 // ============================================================
@@ -289,22 +219,22 @@ export const membershipAPI = {
 
 export const reviewsAPI = {
   getProductReviews: (productId) =>
-    api.get(`/Reviews/Product/${productId}`),
+    client.get(`/Reviews/Product/${productId}`),
 
   addReview: (data) =>
-    api.post('/Reviews', data),
+    client.post('/Reviews', data),
 
   updateReview: (id, data) =>
-    api.put(`/Reviews/${id}`, data),
+    client.put(`/Reviews/${id}`, data),
 
   deleteReview: (id) =>
-    api.delete(`/Reviews/${id}`),
+    client.delete(`/Reviews/${id}`),
 
   getPendingReminder: () =>
-    api.get('/Reviews/PendingReminder'),
+    client.get('/Reviews/PendingReminder'),
 
   dismissReminder: () =>
-    api.post('/Reviews/DismissReminder'),
+    client.post('/Reviews/DismissReminder'),
 };
 
 // ============================================================
@@ -313,7 +243,7 @@ export const reviewsAPI = {
 
 export const wishlistAPI = {
   getWishlist: () =>
-    api.get('/Wishlist'),
+    client.get('/Wishlist'),
 
   addToWishlist: (data) => {
     console.log(
@@ -321,17 +251,17 @@ export const wishlistAPI = {
       data
     );
 
-    return api.post('/Wishlist/Add', data);
+    return client.post('/Wishlist/Add', data);
   },
 
   removeFromWishlist: (id) =>
-    api.delete(`/Wishlist/Remove/${id}`),
+    client.delete(`/Wishlist/Remove/${id}`),
 
   checkIfInWishlist: (productId) =>
-    api.get(`/Wishlist/Check/${productId}`),
+    client.get(`/Wishlist/Check/${productId}`),
 
   moveToCart: (id) =>
-    api.post(`/Wishlist/MoveToCart/${id}`),
+    client.post(`/Wishlist/MoveToCart/${id}`),
 };
 
 // ============================================================
@@ -340,14 +270,14 @@ export const wishlistAPI = {
 
 export const quizAPI = {
   submitQuiz: (data) =>
-    api.post('/Quiz/Submit', data),
+    client.post('/Quiz/Submit', data),
 
   getHistory: () =>
-    api.get('/Quiz/History'),
+    client.get('/Quiz/History'),
 };
 
 // ============================================================
 // DEFAULT EXPORT
 // ============================================================
 
-export default api;
+export default client;
