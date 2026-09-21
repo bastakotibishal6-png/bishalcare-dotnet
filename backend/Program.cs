@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi;
+ // "DefaultConnection": "Host=pg8001.site4now.net;Port=6432;Database=db_acec3e_bishalc;Username=acec3e_bishalc;Password=Bishal@123"
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
