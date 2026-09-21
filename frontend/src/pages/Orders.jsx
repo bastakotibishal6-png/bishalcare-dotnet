@@ -14,7 +14,7 @@ export default function Orders() {
     setLoading(true);
     setError('');
     try {
-      const res = await client.get('/api/Admin/Orders');
+      const res = await client.get('/Admin/Orders');
       setOrders(res.data);
     } catch (err) {
       setError('Could not load orders. Make sure you are logged in with an Admin account.');

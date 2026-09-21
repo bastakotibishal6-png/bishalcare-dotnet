@@ -11,7 +11,7 @@ export default function Users() {
     setLoading(true);
     setError('');
     try {
-      const res = await client.get('/api/Admin/Users');
+      const res = await client.get('/Admin/Users');
       setUsers(res.data);
     } catch (err) {
       setError('Could not load users. Make sure you are logged in with an Admin account.');
