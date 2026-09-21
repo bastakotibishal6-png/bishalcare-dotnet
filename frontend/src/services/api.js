@@ -4,7 +4,7 @@ import axios from 'axios';
 // API CONFIGURATION
 // ============================================================
 
-export const API_BASE_URL = 'http://localhost:8080/api';
+export const API_BASE_URL = 'https://bishalvoid-001-site1.ktempurl.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
