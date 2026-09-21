@@ -8,6 +8,8 @@ using System.Text;
 using Microsoft.OpenApi;
  // "DefaultConnection": "Host=pg8001.site4now.net;Port=6432;Database=db_acec3e_bishalc;Username=acec3e_bishalc;Password=Bishal@123"
 
+ 
+//    "DefaultConnection": "Host=pg8001.site4now.net;Port=6432;Database=db_acebb7_bcare;Username=acebb7_bcare;Password=Bishal@123"
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
