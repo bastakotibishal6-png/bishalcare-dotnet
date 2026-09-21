@@ -24,10 +24,9 @@ client.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Handle unauthorized admin requests
+// Handle unauthorized requests
 client.interceptors.response.use(
   (response) => response,
-
   (error) => {
     if (
       error.response &&
