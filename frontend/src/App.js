@@ -28,7 +28,7 @@ import MyAccount from './pages/MyAccount';
 import Wishlist from './pages/Wishlist';
 import QuizResults from './pages/QuizResults';
 
-import ChatBot from './components/ChatBot/ChatBot';
+
 
 // ==========================================
 // ADMIN COMPONENTS
@@ -62,7 +62,6 @@ function CustomerLayout({ children }) {
 
       <Footer />
 
-      <ChatBot />
     </>
   );
 }
